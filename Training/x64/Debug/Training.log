@@ -1,0 +1,7 @@
+﻿  BinSearch.cpp
+C:\Users\Айрат\source\repos\Training\Training\BinSearch.cpp(15,24): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Айрат\source\repos\Training\Training\BinSearch.cpp(21,27): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Айрат\source\repos\Training\Training\BinSearch.cpp(32,29): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  Lessons.cpp
+  Создание кода...
+  Training.vcxproj -> C:\Users\Айрат\source\repos\Training\x64\Debug\Training.exe
