@@ -42,6 +42,7 @@ void reverse(vector<int>& A) // Поменять значения вектора задом наперёд
 }
 int main()
 {
+	cout << "выаваыыва\n";
 	vector<int> A = { 1,2,3,4,5,6,7,8,9,10 };
 	print_vector(A);
 	reverse(A);
