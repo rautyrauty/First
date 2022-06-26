@@ -38,7 +38,7 @@ int binright_boundary(T x, const vector<T>& A)
 	}
 	return r;
 }
-int main()
+void binSearch()
 {
 	T x; vector<T> A = { 2,2,2,3,3,3,5,5,5,5,5,6,7,7,9,9 }; // Я самый крутой человек на свете
 	cout << "What to find? x = "; cin >> x;
@@ -48,5 +48,4 @@ int main()
 	int binleft = binleft_boundary(x, A); int binright = binright_boundary(x, A);
 	cout << "Binsearch finder give answer: "
 		<< '[' << left << ';' << right << ']' << '\n';
-	return 0;
 }
