@@ -4,7 +4,7 @@
 #include <iomanip>
 using namespace std;
 typedef double T;
-// ЛОл
+// Бинарный поиск границ в массиве
 int left_boundary(T x, const vector<T>& A)
 {
 	int left = 0;
