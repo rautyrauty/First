@@ -40,7 +40,7 @@ int binright_boundary(T x, const vector<T>& A)
 }
 int main()
 {
-	T x; vector<T> A = { 2,2,2,3,3,3,5,5,5,5,5,6,7,7,9,9 };
+	T x; vector<T> A = { 2,2,2,3,3,3,5,5,5,5,5,6,7,7,9,9 }; // Я самый крутой человек на свете
 	cout << "What to find? x = "; cin >> x;
 	int left = left_boundary(x, A); int right = right_boundary(x, A);
 	cout << "Noob finder give answer: "
