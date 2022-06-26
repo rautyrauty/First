@@ -41,7 +41,7 @@ int binright_boundary(T x, const vector<T>& A)
 }
 void binSearch_for_boundaries_in_vector()
 {
-	T x; vector<T> A = { 2,2,2,3,3,3,5,5,5,5,5,6,7,7,9,9 }; // ß ñàìûé êðóòîé ÷åëîâåê íà ñâåòå
+	T x; vector<T> A = { 2,2,2,3,3,3,5,5,5,5,5,6,7,7,9,9 }; 
 	cout << "What to find? x = "; cin >> x;
 	int left = left_boundary(x, A); int right = right_boundary(x, A);
 	cout << "Noob finder give answer: "
@@ -51,7 +51,7 @@ void binSearch_for_boundaries_in_vector()
 		<< '[' << left << ';' << right << ']' << '\n';
 }
 //Бинарный поиск корня в функции f(x)
-double f(double x) // Áèíàðíûé ïîèñê êîðíÿ ôóíêöèè ñ ïîãðåøíîñòüþ
+double f(double x)
 {
 	return (x - 2.21313) * (x - 7);
 }
@@ -81,7 +81,7 @@ void print_vector(const vector<int>& A)
 	}
 	cout << '\n';
 }
-void shift_right(vector<int>& A) // Ñäâèã âåêòîðà âïðàâî
+void shift_right(vector<int>& A)
 {
 	int x = A[A.size()-1];
 	for (int i =int(A.size()) - 1; i > 0; i--)
@@ -90,7 +90,7 @@ void shift_right(vector<int>& A) // Ñäâèã âåêòîðà âïðàâî
 	}
 	A[0] = x;
 }
-void shift_left(vector<int>& A) // Ñäâèã âåêòîðà âëåâî
+void shift_left(vector<int>& A)
 {
 	int x = A[0];
 	for (int i = 0; i < int(A.size())-1; i++)
@@ -99,7 +99,7 @@ void shift_left(vector<int>& A) // Ñäâèã âåêòîðà âëåâî
 	}
 	A[A.size()-1] = x;
 }
-void reverse(vector<int>& A) // Ïîìåíÿòü çíà÷åíèÿ âåêòîðà çàäîì íàïåð¸ä
+void reverse(vector<int>& A)
 {
 	int N = int(A.size());
 	for (int i = 0; i <= N/2; i++)
@@ -110,7 +110,7 @@ void reverse(vector<int>& A) // Ïîìåíÿòü çíà÷åíèÿ âåêòîðà
 	}
 }
 //Решение 27 задачи ЕГЭ змейкой
-void zmeyka27() { // Ðåøåíèå çàäà÷è 27 ñ èäååé ñî çìåéêîé
+void zmeyka27() {
 	const int Q_size = 5;
 	int Q[Q_size];
 	for (int i = 0; i < Q_size; i++)
