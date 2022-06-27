@@ -1,9 +1,59 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <iomanip>
-using namespace std;
-typedef double T;
+#include <iostream> // поток ввода и вывода через клаву
+#include <fstream> // поток ввода и вывода через файлы
+#include <vector> // динамический массив вектор
+#include <iomanip> // фишки с потоками вывода и ввода
+#include <string> // фишки со строками
+#include <sstream> // поток строк
+using namespace std; // использование пространства имён std
+typedef double T; // T = double крч говоря
+// Поток ввода строки, сортировка дурака и пузырьком
+vector<int> input_vector() // Заполнение вектора через поток строки введённого пользователем
+{
+	string line; getline(cin, line);
+	stringstream line_stream(line);
+	vector<int> A;
+	while (not line_stream.eof()) {
+		int x; line_stream >> x;
+		A.push_back(x);
+	}
+	return A; // нужно что-то типо написать vector<int> array = input_vector()
+}
+bool is_ascending_order(const vector<int>& A) // Проверка стоят ли числа в порядке возрастания
+{
+	for (int i = 0; i < int(A.size()) - 1; i++)
+	{
+		if (A[i] > A[i + 1]) {
+			return false;
+		}
+	}
+	return true;
+}
+void fool_sort(vector<int>& A) // Сортировка дурака
+{
+	for (int i = 0; i < int(A.size()) - 1; i++)
+	{
+		if (A[i] > A[i + 1]) {
+			swap(A[i], A[i + 1]);
+			i = -1;
+			continue;
+		}
+	}
+}
+void bubble_sort(vector<int>& A) // Умная сортировка пузырьком
+{
+	bool sorted_flag = 0;
+	for (int bypass_counter = 0; not sorted_flag; bypass_counter++)
+	{
+		sorted_flag = 1;
+		for (int i = 0; i < int(A.size()) - 1 - bypass_counter; i++)
+		{
+			if (A[i] > A[i + 1]) {
+				swap(A[i], A[i + 1]);
+				sorted_flag = 0;
+			}
+		}
+	}
+}
 // Бинарный поиск границ в массиве
 int left_boundary(T x, const vector<T>& A)
 {
@@ -73,12 +123,9 @@ void binSearch_root()
 	else { cout << "Cant use binsearch of root bcs f(a) * f(b) >= 0\n"; }
 }
 //Действия с массивом
-void print_vector(const vector<int>& A)
+void print_vector(const vector<int>& A) // распечатка вектора
 {
-	for (int i = 0; i < int(A.size()); i++)
-	{
-		cout << A[i] << ',';
-	}
+	for (int x = 0; x < int(A.size()); x++) cout << A[x] << ' ';
 	cout << '\n';
 }
 void shift_right(vector<int>& A)
