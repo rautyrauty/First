@@ -6,6 +6,40 @@
 #include <sstream> // поток строк
 using namespace std; // использование пространства имён std
 typedef double T; // T = double крч говоря
+// Сортировка подсчетом моя(плохая) и учителя(крутая). Урок 17
+void Airat_count_sort_10(vector<int>& A) // Легкая сортировка, описание не требуется
+{
+	vector<int> C(10);
+	for (int i = 0; i < int(A.size()); i++) {
+		if (A[i] < 0 or A[i]>9) {
+			cerr << "CAN'T SORT NOT DIGITS VALUES!\n";
+			exit(-1);
+		}
+		C[A[i]]++;
+	}
+	int i = 0;
+	for (int pos = 0; pos < int(A.size()); pos++) {
+		while (C[i] == 0) i++;
+		A[pos] = i; C[i]--;
+	}
+}
+void Timofey_count_sort_10(vector<int>& A)
+{
+	vector<int> C(10);
+	for (int i = 0; i < int(A.size()); i++)
+	{
+		if (A[i] < 0 or A[i]>9)
+		{
+			cerr << "CAN'T SORT NOT DIGITS VALUES!\n";
+			exit(-1);
+		}
+		C[A[i]]++;
+	}
+	int n = 0;
+	for (int x = 0; x < 10; x++)
+		for (int i = 0; i < C[x]; i++)
+			A[n++] = x;
+}
 // Сортировка выборная и сортировка вставками. Урок 16
 void insert_sort(vector<int>& A) // Сортировка вставками. Имба лютейшая!
 {
