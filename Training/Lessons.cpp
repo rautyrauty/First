@@ -6,6 +6,24 @@
 #include <sstream> // поток строк
 using namespace std; // использование пространства имён std
 typedef double T; // T = double крч говоря
+// Олимпиадная задача с сортировкой. Домашнее задание. Урок 18
+void olympiad_task(vector<int>& A)
+{
+	for (int pos = 1; pos < int(A.size()); pos++)
+	{
+		if (A[pos] == 0) continue;
+		int k = 1;
+		for (int i = pos; i - k >= 0; k++)
+		{
+			if (A[i - k] * A[i] <= 0) continue;
+			if (A[i] < A[i - k]) {
+				swap(A[i], A[i - k]);
+				i -= k; k = 0;
+			}
+			else break;
+		} // -1000 50 -2132 0 -323 4332 344 -21 0  -312 -1444 -2324 3443 0 -3242 43 2342 434 0 432 322 4342 -324 432
+	}
+}
 // Сортировка подсчетом моя(плохая) и учителя(крутая). Урок 17
 void Airat_count_sort_10(vector<int>& A) // Легкая сортировка, описание не требуется
 {
