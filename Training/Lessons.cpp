@@ -5,13 +5,24 @@
 #include <string> // фишки со строками
 #include <sstream> // поток строк
 #include <cmath> // фишки с матеши
+#include <ctime> // фишки с временем
 using namespace std; // использование пространства имён std
 typedef double T; // T = double крч говоря
 typedef int pyramidData_t; // для обозначения типа(type) данных пирамиды
 typedef vector<pyramidData_t> pyramid_t; // для обозначения типа пирамиды
+vector<int> vector_random_generator(int Size) // Генератор рандомного не сортированного вектора
+{
+	vector<int> A(Size);
+	for (int i = 0; i < Size; i++) 
+	{
+		int x = rand();
+		x %= 1000; // здесь настраивать диапозон
+		A[i] = x;
+	}
+	return A;
+}
 // Структура данных - Пирамида (Куча). Урок 20
-// я сам хз че написал время 2:24, надеюсь что всё норм работает хД
-int pyramid_height(pyramid_t& p) // возвращает высоту пирамиды
+int pyramid_height(const pyramid_t& p) // Возвращает высоту пирамиды
 {
 	int h = 0;
 	for (int i = p.size(); i > 0;)
@@ -21,33 +32,33 @@ int pyramid_height(pyramid_t& p) // возвращает высоту пирам
 	}
 	return h;
 }
-void print_pyramid(pyramid_t& p) // печатает пирамиду
+void print_pyramid(const pyramid_t& p) // Печатает пирамиду
 {
-	int lol = 0, i = 0;
+	int degree = 0;
+	pyramid_t::size_type i = 0;
 	cout << '\n';
 	for (int h = pyramid_height(p); h > 0; h--)
 	{
-		for (int z = h; z > 0; z--) cout << "   ";
-		for (int z = pow(2, lol); z > 0; z--)
+		for (int counter = h; counter > 0; counter--) cout << "   ";
+		for (int counter = pow(2, degree++); counter > 0; counter--)
 		{
-			cout << p[i] << "   "; i++;
-			if (i >= int(p.size())) break;
+			cout << p[i] << "  "; i++;
+			if (i >= p.size()) break;
 		}
 		cout << '\n';
-		lol++;
 	}
 }
-bool pyramid_sorted(pyramid_t& p) // если пирамида отсортирована - 1, если нет - 0
+bool pyramid_sorted(const pyramid_t& p) // Если пирамида отсортирована - 1, если нет - 0
 {
-	int i = p.size() - 1;
+	pyramid_t::size_type i = p.size() - 1;
 	i = (i - 1) / 2;
-	if (2 * i + 2 >= int(p.size()))
+	if (2 * i + 2 >= p.size())
 	{
 		if (p[2 * i + 1] > p[i]) return 0;
 		i--;
 	}
-	int max, left, right;
-	for (; i >= 0; i--)
+	pyramid_t::size_type max, left, right;
+	for (; ; i--)
 	{
 		left = 2 * i + 1;
 		right = 2 * i + 2;
@@ -56,37 +67,37 @@ bool pyramid_sorted(pyramid_t& p) // если пирамида отсортир�
 	}
 	return 1;
 }
-void sort_pyramid(pyramid_t& p) // сортировка пирамиды
+void pyramid_sorting_attempt(pyramid_t& p) // Проход сортировки пирамиды
 {
-	int i = p.size() - 1;
+	pyramid_t::size_type i = p.size() - 1;
 	i = (i - 1) / 2;
-	if (2 * i + 2 >= int(p.size()))
+	if (2 * i + 2 >= p.size())
 	{
 		if (p[2 * i + 1] > p[i]) swap(p[2 * i + 1], p[i]);
 		i--;
 	}
-	int max, left, right;
-	for (; i >= 0; i--)
+	pyramid_t::size_type max, left, right;
+	for (; ; i--)
 	{
 		left = 2 * i + 1;
 		right = 2 * i + 2;
 		if (p[left] > p[right]) max = left;
 		else max = right;
-		if (p[max] < p[i]) continue;
-		swap(p[max], p[i]);
+		if (p[max] > p[i]) swap(p[max], p[i]);
+		if (i == 0) break;
 	}
 }
-pyramidData_t take_out_top(pyramid_t& p) // возвращает вырезанное значение вершины пирамиды и автоматически сортирует её
+pyramidData_t take_out_top(pyramid_t& p) // Возвращает вырезанное значение вершины пирамиды и автоматически сортирует её
 {
 	pyramidData_t top = p[0];
 	swap(p[0], p[p.size() - 1]); p.pop_back();
-	int max, left, right;
-	for (int i = 0; i < int(p.size());)
+	pyramid_t::size_type max, left, right;
+	for (pyramid_t::size_type i = 0; i < p.size();)
 	{
 		left = 2 * i + 1;
 		right = 2 * i + 2;
-		if ((left >= int(p.size())) or (right >= int(p.size()))) break;
-		if (p[left] > p[right]) max = left;
+		if (left >= p.size()) break;
+		if ((right >= p.size()) or (p[left] > p[right])) max = left;
 		else max = right;
 		if (p[max] < p[i]) break;
 		swap(p[max], p[i]);
@@ -97,12 +108,12 @@ pyramidData_t take_out_top(pyramid_t& p) // возвращает вырезан�
 void put_in_pyramid(pyramid_t& p, pyramidData_t x) // Вставляет в пирамиду значение
 {
 	p.push_back(x);
-	for (int i = p.size() - 1; (i > 0) and (p[i] > p[(i - 1) / 2]); i = (i - 1) / 2)
+	for (pyramid_t::size_type i = p.size() - 1; (i > 0) and (p[i] > p[(i - 1) / 2]); i = (i - 1) / 2)
 	{
 		swap(p[i], p[(i - 1) / 2]);
 	}
 }
-void print_top_of_pyramid(pyramid_t& p) // печатает максимальное число в пирамиде
+void print_top_of_pyramid(const pyramid_t& p) // Печатает максимальное число в пирамиде
 {
 	cout << "Top of the pyramid = " << p[0] << '\n';
 }
@@ -431,5 +442,16 @@ void skobki()
 }
 int main()
 {
+	srand(time(nullptr));
+	pyramid_t A = vector_random_generator(10);
+	while (not pyramid_sorted(A)) pyramid_sorting_attempt(A);
+	if (pyramid_sorted(A)) cout << "Pyramid sorted!\n";
+	else cout << "Pyramid not sorted!\n";
+	print_pyramid(A);
+	pyramidData_t top = take_out_top(A);
+	cout << "\nTop of the pyramid = " << top << '\n';
+	print_pyramid(A);
+	put_in_pyramid(A, 228);
+	print_pyramid(A);
 	return 0;
 }
