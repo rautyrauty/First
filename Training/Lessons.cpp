@@ -6,8 +6,24 @@
 #include <sstream> // поток строк
 #include <cmath> // фишки с матеши
 #include <ctime> // фишки с временем
-using namespace std; // использование пространства имён std
-typedef double T; // T = double крч говоря
+// использование пространства имён std:
+using namespace std;
+// Задача с Ханойскими башнями (Рекурсия). Урок 21
+void towers_of_hanoi(int n, int start, int finish)
+{
+	if (n == 1) { // крайний случай
+		cout << "Move disk " << n << " from " <<
+			start << " to " << finish << '\n';
+	}
+	else { // рекуррентный случай
+		int tmp = 6 - start - finish;
+		towers_of_hanoi(n - 1, start, tmp);
+		cout << "Move disk " << n << " from " <<
+			start << " to " << finish << '\n';
+		towers_of_hanoi(n - 1, tmp, finish);
+	}
+}
+// Структура данных - Пирамида (Куча). Урок 20
 typedef int pyramidData_t; // для обозначения типа(type) данных пирамиды
 typedef vector<pyramidData_t> pyramid_t; // для обозначения типа пирамиды
 vector<int> vector_random_generator(int Size) // Генератор рандомного не сортированного вектора
@@ -21,7 +37,6 @@ vector<int> vector_random_generator(int Size) // Генератор рандом
 	}
 	return A;
 }
-// Структура данных - Пирамида (Куча). Урок 20
 int pyramid_height(const pyramid_t& p) // Возвращает высоту пирамиды
 {
 	int h = 0;
@@ -242,6 +257,7 @@ void bubble_sort(vector<int>& A) // Умная сортировка пузырь
 	// Таким образом постоянно выводя в левую часть массива самые большие элементы. Как пузырёк ыыыыыы.
 }
 // Бинарный поиск границ в массиве
+typedef double T; // T = double
 int left_boundary(T x, const vector<T>& A)
 {
 	int left = 0;
@@ -442,16 +458,6 @@ void skobki()
 }
 int main()
 {
-	srand(time(nullptr));
-	pyramid_t A = vector_random_generator(10);
-	while (not pyramid_sorted(A)) pyramid_sorting_attempt(A);
-	if (pyramid_sorted(A)) cout << "Pyramid sorted!\n";
-	else cout << "Pyramid not sorted!\n";
-	print_pyramid(A);
-	pyramidData_t top = take_out_top(A);
-	cout << "\nTop of the pyramid = " << top << '\n';
-	print_pyramid(A);
-	put_in_pyramid(A, 228);
-	print_pyramid(A);
+	towers_of_hanoi(4, 1, 2);
 	return 0;
 }
