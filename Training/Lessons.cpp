@@ -6,8 +6,95 @@
 #include <sstream> // поток строк
 #include <cmath> // фишки с матеши
 #include <ctime> // фишки с временем
+#include <cassert>// фишки с временем
 // использование пространства имён std:
 using namespace std;
+// Рекурсивные сортировки слиянием и Тони Хоара("Быстрая"). Урок 23
+void quick_sort_merge(const vector<int>& left, const vector<int>& right, const vector<int>& middlev, vector<int>& A)
+{
+	vector<int>::size_type k = 0;
+	for (vector<int>::size_type i = 0; i < left.size(); i++) A[k++] = left[i];
+	for (vector<int>::size_type i = 0; i < middlev.size(); i++) A[k++] = middlev[i];
+	for (vector<int>::size_type i = 0; i < right.size(); i++) A[k++] = right[i];
+}
+void quick_sort(vector<int>& A)
+{
+	if (A.size() <= 1) return;
+	int middle = A[0];
+	vector<int> left; vector<int> right; vector<int> middlev;
+	for (vector<int>::size_type i = 0; i < A.size(); i++)
+	{
+		if (A[i] < middle) {
+			left.push_back(A[i]); 
+			continue;
+		}
+		if (A[i] > middle) {
+			right.push_back(A[i]);
+			continue;
+		}
+		middlev.push_back(A[i]);
+	}
+	quick_sort(left); quick_sort(right);
+	quick_sort_merge(left, right, middlev, A);
+}
+void merge_sorted_vectors(const vector<int>& A, const vector<int>& B, vector<int>& C) // Слияние двух отсортированных массивов
+{
+	size_t i = 0, k = 0, n = 0;
+	while (i<A.size() and k<B.size())
+	{
+		if (A[i] <= B[k]) C[n++] = A[i++];
+		else  C[n++] = B[k++];
+	}
+	while (i < A.size()) C[n++] = A[i++];
+	while (k < B.size()) C[n++] = B[k++];
+}
+void merge_sort(vector<int>& A) // Сортировка слиянием
+{
+	if (int(A.size()) > 1)
+	{
+		int N = A.size();
+		vector<int> left; vector<int> right;
+		for (int i = 0; i < N / 2; i++) left.push_back(A[i]);
+		for (int i = N / 2; i < N; i++) right.push_back(A[i]);
+		merge_sort(left); merge_sort(right);
+		merge_sorted_vectors(left, right, A);
+	}
+}
+// Быстрое возведение в степень через Рекурсию. Урок 22
+int my_pow(int a, int n)
+{
+	if (n == 0) return 1;
+	if (n % 2 == 0) return (my_pow(a * a, n / 2));
+	return my_pow(a, n - 1)*a; // делаем четной
+}
+// Нахождение НОД через Рекурсию (алгоритм Евклида). Урок 22
+int gcd_evclid_1(int a, int b)
+{
+	if (a == b) return a;
+	if (a > b) return gcd_evclid_1(a - b, b);
+	return gcd_evclid_1(a, b - a);
+}
+int gcd_evclid_2(int a, int b) // продвинутый алг.
+{
+	assert(a > b);
+	if (b == 0) return a;
+	return (b, a % b); //усливие, что 
+}
+// Генератор чисел через Рекурсию. Урок 22
+void num_generator(int num_system, int lenght, vector<int>& digits)
+{
+	if (lenght == 0) {
+		for (int i = 0; i< int(digits.size()); i++) cout << digits[i];
+		cout << '\n';
+	}
+	else {
+		for (int k = 0; k < num_system; k++) {
+			digits.push_back(k);
+			num_generator(num_system, lenght - 1, digits);
+			digits.pop_back();
+		}
+	}
+}
 // Задача с Ханойскими башнями (Рекурсия). Урок 21
 void towers_of_hanoi(int n, int start, int finish)
 {
@@ -32,7 +119,7 @@ vector<int> vector_random_generator(int Size) // Генератор рандом
 	for (int i = 0; i < Size; i++) 
 	{
 		int x = rand();
-		x %= 1000; // здесь настраивать диапозон
+		x %= 10000; // здесь настраивать диапозон
 		A[i] = x;
 	}
 	return A;
@@ -72,7 +159,7 @@ bool pyramid_sorted(const pyramid_t& p) // Если пирамида отсор�
 		if (p[2 * i + 1] > p[i]) return 0;
 		i--;
 	}
-	pyramid_t::size_type max, left, right;
+	pyramid_t::size_type left, right;
 	for (; ; i--)
 	{
 		left = 2 * i + 1;
@@ -382,7 +469,7 @@ void zmeyka27() {
 //Попытка в структуры и оператор
 //задача с нахождением ЛЮДЕЙ с максимальным количеством возрастов
 struct Person {
-	int age;
+	int age = 0;
 	string name;
 };
 ostream& operator << (ostream& out, Person& one) {
@@ -458,6 +545,10 @@ void skobki()
 }
 int main()
 {
-	towers_of_hanoi(4, 1, 2);
+	srand(std::time(nullptr));
+	vector<int> A; A = vector_random_generator(10);
+	quick_sort(A);
+	print_vector(A);
+	cout << clock() << '\n';
 	return 0;
 }

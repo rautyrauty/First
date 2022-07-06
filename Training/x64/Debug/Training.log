@@ -1,6 +1,7 @@
 ﻿  Lessons.cpp
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(41,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(43,14): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(56,20): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(73,23): warning C4101: max: неиспользованная локальная переменная
+C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(55,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(130,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(132,14): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(145,20): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(548,17): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   Training.vcxproj -> C:\Users\Айрат\Documents\GitHub\training\x64\Debug\Training.exe
