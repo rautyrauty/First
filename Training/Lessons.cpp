@@ -9,6 +9,57 @@
 #include <cassert>// фишки с временем
 // использование пространства имён std:
 using namespace std;
+// Поразрядная сортировка и Поиск максимального элемента статического массива. Лекция 8
+int max_of_array(const int* A, const int& N)
+{
+	int max = -1;
+	for (int i = 0; i < N; i++)
+	{
+		if (A[i] > max) max = A[i];
+	}
+	return max;
+}
+void bitwise_sort(int* A, const int& N, const int& max)
+{
+	vector<int> zero; vector<int> one;
+	for (int j = 0; (max / int(pow(2, j))) > 0; j++)
+	{
+		for (int i = 0; i < N; i++) {
+			if ((A[i] / int(pow(2, j))) % 2 == 0) zero.push_back(A[i]);
+			if ((A[i] / int(pow(2, j))) % 2 == 1)
+			{
+				one.push_back(A[i]);
+			}
+		}
+		for (int i = 0; i < zero.size(); i++) A[i] = zero[i];
+		for (int i = zero.size(); i < N; i++) A[i] = one[i - zero.size()];
+		zero.clear(); one.clear();
+	}
+}
+/*int main() // Пример работы
+{
+	const int N = 10;
+	int A[N] = { 10,9,8,1000,6,15,4,3,2,100 };
+	bitwise_sort(reinterpret_cast<int*>(A), N, max_of_array(reinterpret_cast<int*>(A), N));
+	for (int i = 0; i < N; i++) cout << A[i] << '\t';
+	cout << '\n';
+	return 0; // АХАХААХАХАХАХХАХАХАХАХА ОНО РАБОТАЕТ!!!!
+}*/
+// Приколы с двоичными динамическими массивами.
+void print_and_fill_array_2d(const int N, const int M, int* A)
+{
+	int k = 1;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			*(A + j + M * i) = k++;
+			cout << *(A + j + M * i) << '\t';
+		}
+		cout << '\n';
+	}
+}
+//Выше идут лекции с МФТИ
 // Рекурсивные сортировки слиянием и Тони Хоара("Быстрая"). Урок 23
 void quick_sort_merge(const vector<int>& left, const vector<int>& right, const vector<int>& middlev, vector<int>& A)
 {
@@ -545,10 +596,5 @@ void skobki()
 }
 int main()
 {
-	srand(std::time(nullptr));
-	vector<int> A; A = vector_random_generator(10);
-	quick_sort(A);
-	print_vector(A);
-	cout << clock() << '\n';
 	return 0;
 }
