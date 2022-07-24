@@ -123,12 +123,11 @@ public:
             push_front(value);
             return;
         }
-        elements_count += 1;
-        element* current = first_;
-        for (int i = 0; i < index; i++) current = current->next;
+        element* current = this->goto_index(index);
         element* element_insert = new element(value, current->prev, current);
         current->prev->next = element_insert;
         current->prev = element_insert;
+        this->elements_count += 1;
     }
     void removeAt(const int& index) // Удаление элемента по индексу
     {
@@ -144,28 +143,25 @@ public:
             pop_back();
             return;
         }
-        elements_count -= 1;
-        element* current = first_;
-        for (int i = 0; i < index; i++) current = current->next;
+        element* current = this->goto_index(index);
         current->prev->next = current->next;
         current->next->prev = current->prev;
         delete[] current;
+        this->elements_count -= 1;
     }
 
     data_t& operator[] (const int& index) // Получение ссылки на значение элемента с индексом index, чтобы можно было писать list[4] = 155; std::cout << list[4];
     {
         assert(index >= 0);
-        assert(index < elements_count);
-        element* current = first_;
-        for (int i = 0; i < index; i++) current = current->next;
+        assert(index < this->elements_count);
+        element* current = this->goto_index(index);
         return current->value;
     }
     const data_t& at(const int& index) const // Получение константной на значение элемента с индексом index
     {
         assert(index >= 0);
         assert(index < elements_count);
-        element* current = first_;
-        for (int i = 0; i < index; i++) current = current->next;
+        element* current = this->goto_index(index);
         return current->value;
     }
 
@@ -209,7 +205,6 @@ public:
         return out;
     }
 private:
-
     struct element
     {
         element()
@@ -231,6 +226,21 @@ private:
     int elements_count;
     element* first_;
     element* last_;
+    element* goto_index(const int& index)
+    {
+        if (index < (this->elements_count) / 2)
+        {
+            element* current = first_;
+            for (int i = 0; i < index; i++) current = current->next;
+            return current;
+        }
+        else 
+        {
+            element* current = last_;
+            for (int i = this->elements_count-1; i > index; i--) current = current->prev;
+            return current;
+        }
+    }
 };
 
 
@@ -246,25 +256,14 @@ void random_array(int* A, const int N) // Генератор рандомног�
 }
 void programm()
 {
-    MyList<std::string> Airat;
-    Airat.push_back("Ivan");
-    Airat.push_back("Baklan");
-    Airat.push_back("Rafal");
-    Airat.push_back("Slava");
-    Airat.push_back("Timur");
-    Airat.push_front("Ilyas");
-    Airat.push_front("Airat");
-    std::cout << Airat.length() << '\n';
-    Airat.print();
-    std::cout << Airat.length() << ' '
-        << Airat.first() << ' ' << Airat.last() << ' ' << Airat.isEmpty() << '\n';
-    while (Airat.length() != 0)
-    {
-        Airat.pop_back();
-        std::cout << Airat;
-    }
-    std::cout << Airat.length() << ' '
-        << Airat.isEmpty() << '\n';
+    const int N = 1000;
+    int A[N];
+    random_array(A, N);
+    MyList<int> Airat(A,N);
+    std::cout << Airat << '\n';
+    Airat.removeAt(500);
+    std::cout << Airat << '\n';
+    Airat.removeAt(500);
 }
 int main()
 {
