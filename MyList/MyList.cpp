@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 
+template <typename data_t>
 class MyList
 {
 public:
+    
     MyList() // Конструктор по умолчанию, создаётся пустой список
     {
         elements_count = 0;
@@ -42,7 +44,7 @@ public:
         delete last_;
     }
 
-    void push_front(const int& value) // Вставка в начало
+    void push_front(const data_t& value) // Вставка в начало
     {
         if (elements_count == 0)
         {
@@ -53,7 +55,7 @@ public:
         this->first_ = new element(value, NULL, this->first_);
         this->first_->next->prev = this->first_;
     }
-    void push_back(const int& value) // Вставка в конец
+    void push_back(const data_t& value) // Вставка в конец
     {
         if (elements_count == 0)
         {
@@ -65,10 +67,10 @@ public:
         this->last_->prev->next = this->last_;
     }
 
-    int pop_front() // Получение значения первого элемента и удаление его из списка
+    data_t pop_front() // Получение значения первого элемента и удаление его из списка
     {
         assert(elements_count > 0);
-        int for_return = first_->value;
+        data_t for_return = first_->value;
         if (elements_count == 1)
         {
             delete first_;
@@ -83,10 +85,10 @@ public:
         first_->prev = NULL;
         return for_return;
     }
-    int pop_back() // Получение значения последнего элемента и удаление его из списка
+    data_t pop_back() // Получение значения последнего элемента и удаление его из списка
     {
         assert(elements_count > 0);
-        int for_return = last_->value;
+        data_t for_return = last_->value;
         if (elements_count == 1)
         {
             delete last_;
@@ -102,7 +104,7 @@ public:
         return for_return;
     }
 
-    int indexOf(const int& value) const // Индекс первого по порядку элемента со значением value. Если не найден, то вернуть -1 
+    int indexOf(const data_t& value) const // Индекс первого по порядку элемента со значением value. Если не найден, то вернуть -1 
     {
         element* current = first_;
         for (int i = 0; i < elements_count; i++)
@@ -112,7 +114,7 @@ public:
         }
         return -1;
     }
-    void insert(const int& index, const int& value) // Создание элемента с индексом index и значением value
+    void insert(const int& index, const data_t& value) // Создание элемента с индексом index и значением value
     {
         assert(index >= 0);
         assert(index <= elements_count);
@@ -150,7 +152,7 @@ public:
         delete[] current;
     }
 
-    int& operator[] (const int& index) // Получение ссылки на значение элемента с индексом index, чтобы можно было писать list[4] = 155; std::cout << list[4];
+    data_t& operator[] (const int& index) // Получение ссылки на значение элемента с индексом index, чтобы можно было писать list[4] = 155; std::cout << list[4];
     {
         assert(index >= 0);
         assert(index < elements_count);
@@ -158,7 +160,7 @@ public:
         for (int i = 0; i < index; i++) current = current->next;
         return current->value;
     }
-    const int& at(const int& index) const // Получение константной на значение элемента с индексом index
+    const data_t& at(const int& index) const // Получение константной на значение элемента с индексом index
     {
         assert(index >= 0);
         assert(index < elements_count);
@@ -176,12 +178,12 @@ public:
         return elements_count;
     }
 
-    const int& first() const // Возвращает ссылку на значение первого элемента
+    const data_t& first() const // Возвращает ссылку на значение первого элемента
     {
         assert(elements_count > 0);
         return first_->value;
     }
-    const int& last() const // Возвращает ссылку на значение последнего элемента
+    const data_t& last() const // Возвращает ссылку на значение последнего элемента
     {
         assert(elements_count > 0);
         return last_->value;
@@ -196,12 +198,16 @@ public:
         element* current = first_;
         for (int i = 0; i < elements_count; i++)
         {
-            std::cout << i << ':' << current->value << '\t';
+            std::cout << i << ':' << current->value << ' ';
             current = current->next;
         }
         std::cout << '\n';
     }
-
+    friend std::ostream& operator << (std::ostream& out, MyList& Airat) {
+        for (int i = 0; i < Airat.length(); i++) out << i << ':' << Airat[i] << ' ';
+        out << '\n';
+        return out;
+    }
 private:
 
     struct element
@@ -212,7 +218,7 @@ private:
             prev = NULL;
             value = NULL;
         }
-        element(int value, element* prev, element* next)
+        element(data_t value, element* prev, element* next)
         {
             this->next = next;
             this->prev = prev;
@@ -220,12 +226,14 @@ private:
         }
         element* next;
         element* prev;
-        int value;
+        data_t value;
     };
     int elements_count;
     element* first_;
     element* last_;
 };
+
+
 void random_array(int* A, const int N) // Генератор рандомного не сортированного массива
 {
     srand(time(0));
@@ -238,18 +246,22 @@ void random_array(int* A, const int N) // Генератор рандомног�
 }
 void programm()
 {
-    const int N = 10;
-    int A[N];
-    random_array(A, N);
-    MyList Airat(A, N);
+    MyList<std::string> Airat;
+    Airat.push_back("Ivan");
+    Airat.push_back("Baklan");
+    Airat.push_back("Rafal");
+    Airat.push_back("Slava");
+    Airat.push_back("Timur");
+    Airat.push_front("Ilyas");
+    Airat.push_front("Airat");
     std::cout << Airat.length() << '\n';
     Airat.print();
-    std::cout << Airat.length() << '\n'
+    std::cout << Airat.length() << ' '
         << Airat.first() << ' ' << Airat.last() << ' ' << Airat.isEmpty() << '\n';
     while (Airat.length() != 0)
     {
         Airat.pop_back();
-        Airat.print();
+        std::cout << Airat;
     }
     std::cout << Airat.length() << ' '
         << Airat.isEmpty() << '\n';
