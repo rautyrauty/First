@@ -121,11 +121,6 @@ public:
             push_front(value);
             return;
         }
-        if (index == 0)
-        {
-            push_front(elements_count);
-            return;
-        }
         elements_count += 1;
         element* current = first_;
         for (int i = 0; i < index; i++) current = current->next;
