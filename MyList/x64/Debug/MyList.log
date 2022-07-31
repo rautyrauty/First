@@ -1,3 +1,1 @@
-﻿  MyList.cpp
-C:\Users\Айрат\Documents\GitHub\training\MyList\MyList.cpp(249,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  MyList.vcxproj -> C:\Users\Айрат\Documents\GitHub\training\x64\Debug\MyList.exe
+﻿  MyList.vcxproj -> D:\repositories\training\x64\Debug\MyList.exe
