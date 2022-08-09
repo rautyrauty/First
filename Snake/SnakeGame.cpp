@@ -54,7 +54,6 @@ public:
 	}
 	void SpawnFruit(const uint16_t& snake_size)
 	{
-
 		uint16_t number_of_free_elements = (height - 2) * (width - 2) - snake_size;
 		uint16_t x = rand();
 		x %= number_of_free_elements;

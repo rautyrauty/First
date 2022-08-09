@@ -208,6 +208,7 @@ void OpenMenu()
 
 int main()
 {
+	SetConsoleTitle(L"Snake Game");
 	OpenMenu();
 	_CrtDumpMemoryLeaks();
 	return 0;

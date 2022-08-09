@@ -1,6 +1,17 @@
-﻿  MenuAndBestScoreViewAndGameOver.cpp
-D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(53,13): warning C4805: ==: небезопасное смешение типа "int" и типа "bool" в операции
-D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(103,13): warning C4805: ==: небезопасное смешение типа "uint8_t" и типа "bool" в операции
-D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(135,4): warning C4809: в операторе switch имеется ненужная метка "default"; все возможные метки "case" уже заданы
-D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(183,58): warning C4267: =: преобразование из "size_t" в "uint8_t"; возможна потеря данных
+﻿  SnakeGame.cpp
+D:\repositories\training\Snake\SnakeGame.cpp(138,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(142,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(147,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(151,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(160,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(165,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(171,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(176,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(198,40): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(198,27): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(199,42): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(199,28): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(211,42): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(211,28): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
+D:\repositories\training\Snake\SnakeGame.cpp(253,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   Snake.vcxproj -> D:\repositories\training\x64\Debug\Snake.exe
