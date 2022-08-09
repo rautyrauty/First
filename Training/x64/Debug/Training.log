@@ -1,7 +1,7 @@
 ﻿  Lessons.cpp
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(55,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(130,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(132,14): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(145,20): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-C:\Users\Айрат\Documents\GitHub\training\Training\Lessons.cpp(548,17): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Training.vcxproj -> C:\Users\Айрат\Documents\GitHub\training\x64\Debug\Training.exe
+D:\repositories\training\Training\Lessons.cpp(35,3): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\repositories\training\Training\Lessons.cpp(106,19): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\repositories\training\Training\Lessons.cpp(181,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\repositories\training\Training\Lessons.cpp(183,14): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+D:\repositories\training\Training\Lessons.cpp(196,20): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  Training.vcxproj -> D:\repositories\training\x64\Debug\Training.exe

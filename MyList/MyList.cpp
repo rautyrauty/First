@@ -1,10 +1,6 @@
 #include <iostream>
 #include <cassert>
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 template <typename data_t>
 class MyList
 {
@@ -253,21 +249,4 @@ void random_array(int* A, const int N) // Генератор рандомног�
         x %= 1000; // здесь настраивать диапозон чисел
         A[i] = x;
     }
-}
-void programm()
-{
-    const int N = 1000;
-    int A[N];
-    random_array(A, N);
-    MyList<int> Airat(A,N);
-    std::cout << Airat << '\n';
-    Airat.removeAt(500);
-    std::cout << Airat << '\n';
-    Airat.removeAt(500);
-}
-int main()
-{
-    programm();
-    _CrtDumpMemoryLeaks();
-    return 0;
 }

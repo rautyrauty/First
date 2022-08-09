@@ -1,0 +1,6 @@
+﻿  MenuAndBestScoreViewAndGameOver.cpp
+D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(53,13): warning C4805: ==: небезопасное смешение типа "int" и типа "bool" в операции
+D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(103,13): warning C4805: ==: небезопасное смешение типа "uint8_t" и типа "bool" в операции
+D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(135,4): warning C4809: в операторе switch имеется ненужная метка "default"; все возможные метки "case" уже заданы
+D:\repositories\training\Snake\MenuAndBestScoreViewAndGameOver.cpp(183,58): warning C4267: =: преобразование из "size_t" в "uint8_t"; возможна потеря данных
+  Snake.vcxproj -> D:\repositories\training\x64\Debug\Snake.exe
