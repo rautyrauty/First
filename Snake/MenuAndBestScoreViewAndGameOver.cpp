@@ -29,11 +29,11 @@ uint16_t GiveBestScore()
 bool GameOver(const uint16_t& tmpScore, const HANDLE& hStdOut)
 {
 	system("CLS"); // clear screen
-	// Номера клавиш
+	// РќРѕРјРµСЂР° РєР»Р°РІРёС€
 	const uint8_t LEFT = 75;
 	const uint8_t RIGHT = 77;
 	const uint8_t ENTER = 13;
-	// конец нумерации клавиш
+	// РєРѕРЅРµС† РЅСѓРјРµСЂР°С†РёРё РєР»Р°РІРёС€
 	uint16_t BestScore = GiveBestScore();
 	if (tmpScore > BestScore) SetBestScore(tmpScore);
 	CursorGoto(55, 12);
@@ -76,12 +76,12 @@ bool GameOver(const uint16_t& tmpScore, const HANDLE& hStdOut)
 void OpenBestScoreView(const HANDLE& hStdOut)
 {
 	system("CLS"); // clear screen
-	// Номера клавиш
+	// РќРѕРјРµСЂР° РєР»Р°РІРёС€
 	const uint8_t LEFT = 75;
 	const uint8_t RIGHT = 77;
 	const uint8_t EXIT = 27;
 	const uint8_t ENTER = 13;
-	// конец нумерации клавиш
+	// РєРѕРЅРµС† РЅСѓРјРµСЂР°С†РёРё РєР»Р°РІРёС€
 
 	bool ActivePosMenu = 0;
 	bool exit_flag = true;
@@ -145,12 +145,12 @@ void OpenMenu()
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	system("CLS"); // clear screen
-	// Номера клавиш
+	// РќРѕРјРµСЂР° РєР»Р°РІРёС€
 	const uint8_t EXIT = 27;
 	const uint8_t UP = 72;
 	const uint8_t DOWN = 80;
 	const uint8_t ENTER = 13;
-	// конец нумерации клавиш
+	// РєРѕРЅРµС† РЅСѓРјРµСЂР°С†РёРё РєР»Р°РІРёС€
 	uint8_t pressed_key;
 	uint8_t ActivePosMenu = 0;
 	std::string Menu[] = { "New game","Best session score", "Exit" };
@@ -158,9 +158,9 @@ void OpenMenu()
 	while (exit_flag)
 	{
 		conCursoreSet(false, 100); // invis cursore
-		CursorGoto(50, 12); // Поставит курсор в середину консоли
+		CursorGoto(50, 12); // РџРѕСЃС‚Р°РІРёС‚ РєСѓСЂСЃРѕСЂ РІ СЃРµСЂРµРґРёРЅСѓ РєРѕРЅСЃРѕР»Рё
 
-		//Вывод меню на экран с выбранной строкой
+		//Р’С‹РІРѕРґ РјРµРЅСЋ РЅР° СЌРєСЂР°РЅ СЃ РІС‹Р±СЂР°РЅРЅРѕР№ СЃС‚СЂРѕРєРѕР№
 		for (uint8_t i = 0; i < size(Menu); i++)
 		{
 			if (i == ActivePosMenu) SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -184,7 +184,7 @@ void OpenMenu()
 			else ActivePosMenu--;
 			break;
 		case ENTER:
-			//ActiveChoice(Menu[ActivePosMenu]); // Отладка
+			//ActiveChoice(Menu[ActivePosMenu]); // РћС‚Р»Р°РґРєР°
 			switch (ActivePosMenu) {
 			case 0: // new game
 				while (GameOver(SnakeGame(), hStdOut)){ }
@@ -200,7 +200,7 @@ void OpenMenu()
 			}
 			break;
 		default:
-			//std::cout << "code: " << int(pressed_key) << "    "; // Отладка
+			//std::cout << "code: " << int(pressed_key) << "    "; // РћС‚Р»Р°РґРєР°
 			break;
 		}
 	}
