@@ -128,11 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleCursore_cmds.cpp" />
-    <ClCompile Include="MenuAndBestScoreViewAndGameOver.cpp" />
-    <ClCompile Include="SnakeGame.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameClassesMetods.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleCursore_cmds.h" />
+    <ClInclude Include="GameClassesHeader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,30 +1,30 @@
 #include <iostream>
-#include <conio.h>
-#include <Windows.h>
+#include <functional>
 using namespace std;
+int mult(int a,int b)
+{
+	return a * b;
+}
+int sum(int a, int b)
+{
+	return a + b;
+}
+int del(int a, int b)
+{
+	return a / b;
+}
+void clan(int(*banan)(int a, int b))
+{
+	cout << banan(1000, 10) << '\n';
+}
 int main()
 {
-	char** map = new char* [20];
-	for (int i = 0; i < 20; i++)
-	{
-		map[i] = new char[100];
-	}
-	int x = 0;
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 100; j++)
-		{
-			map[i][j] = 'w';
-		}
-	}
-	*(*(map + 1) + 0) = 's';
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 100; j++)
-		{
-			cout << map[i][j];
-		}
-		cout << '\n';
-	}
+	int(*banan)(int a, int b);
+	banan = mult;
+	clan(banan);
+	banan = del;
+	clan(banan);
+	banan = sum;
+	clan(banan);
 	return 0;
 }

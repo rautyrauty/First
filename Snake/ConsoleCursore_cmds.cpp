@@ -1,8 +1,8 @@
 #include "ConsoleCursore_cmds.h"
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-void CursorGoto(const short& x, const short& y)
+void CursorGoto(const Position& CursorePosition)
 {
-	SetConsoleCursorPosition(hStdOut, { x,y });
+	SetConsoleCursorPosition(hStdOut, { CursorePosition.x,CursorePosition.y });
 }
 
 void conCursoreSet(bool mode, short size)

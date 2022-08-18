@@ -1,17 +1,2 @@
-﻿  SnakeGame.cpp
-D:\repositories\training\Snake\SnakeGame.cpp(138,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(142,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(147,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(151,18): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(160,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(165,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(171,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(176,19): warning C4244: =: преобразование "uint16_t" в "uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(198,40): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(198,27): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(199,42): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(199,28): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(211,42): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(211,28): warning C4244: аргумент: преобразование "uint16_t" в "const uint8_t", возможна потеря данных
-D:\repositories\training\Snake\SnakeGame.cpp(253,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Snake.vcxproj -> D:\repositories\training\x64\Debug\Snake.exe
+﻿  GameClassesMetods.cpp
+D:\repositories\training\Snake\GameClassesMetods.cpp(89,2): error C3861: assert: идентификатор не найден
