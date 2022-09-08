@@ -1,12 +1,14 @@
 #include <iostream>
-#include <bitset>
-#include <conio.h>
+#include <vector>
+#include <algorithm>
 using namespace std;
-
 int main()
 {
-    int a = -10;
-    size_t L = static_cast<size_t>(-a);
-    cout << L;
+    vector<int> A{ 1,2,3 };
+    sort(A.begin(), A.end(), [](int a, int b) 
+        {
+            return a > b;
+        });
+    for (auto& a : A) cout << a << '\n';
     return 0;
 }
