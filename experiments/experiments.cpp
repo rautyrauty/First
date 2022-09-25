@@ -1,14 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 int main()
 {
-    vector<int> A{ 1,2,3 };
-    sort(A.begin(), A.end(), [](int a, int b) 
-        {
-            return a > b;
-        });
-    for (auto& a : A) cout << a << '\n';
-    return 0;
+	vector<vector<int>> a;
+	cout << a.size() << '\n';
+	a.push_back({});
+	cout << a.size() << ' ' << a[0].size() << '\n';
 }

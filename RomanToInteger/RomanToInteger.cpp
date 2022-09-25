@@ -21,7 +21,7 @@
 #define C 100
 #define D 500
 #define M 1000
-int Solutions::RomanToInt(string RomanStr)
+int Solutions::RomanToInt(std::string RomanStr)
 {
 	const int RomanStrSize = RomanStr.size();
 	int* RomanStrInIntegerArray = new int[RomanStrSize];

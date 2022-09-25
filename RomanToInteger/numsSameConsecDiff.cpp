@@ -6,7 +6,7 @@
 //
 //You may return the answer in any order.
 #include "Solutions.h"
-void Recursiya(vector<int>& ANSWER,int n, const int& k, const int& prev, int currentAns_el, int& countSR)
+void Recursiya(std::vector<int>& ANSWER,int n, const int& k, const int& prev, int currentAns_el, int& countSR)
 {
 	if (n == 0)
 	{
@@ -25,8 +25,8 @@ void Recursiya(vector<int>& ANSWER,int n, const int& k, const int& prev, int cur
 		Recursiya(ANSWER, n - 1, k, prev - k, currentAns_el + (prev - k) * discharge, countSR);
 	}
 }
-vector<int> Solutions::numsSameConsecDiff(int n, int k) {
-	vector<int> ANSWER;
+std::vector<int> Solutions::numsSameConsecDiff(int n, int k) {
+	std::vector<int> ANSWER;
 	int countSR = 0;
 	int discharge;
 	for (short int i = 1; i < 10; i++)

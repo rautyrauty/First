@@ -4,10 +4,10 @@
 //Each letter in magazine can only be used once in ransomNote.
 #include "Solutions.h"
 #include <map>
-bool Solutions::canConstruct(string ransomNote, string magazine)
+bool Solutions::canConstruct(std::string ransomNote, std::string magazine)
 {
 	int magazsize = magazine.size();
-	map<char, unsigned short int> MagazineMap;
+	std::map<char, unsigned short int> MagazineMap;
 	for (char ch : magazine)
 	{
 		auto CharIteratorInMap = MagazineMap.find(ch);
