@@ -1,2 +1,0 @@
-C:\Users\Айрат\Documents\GitHub\training\x64\Debug\Training.exe.lastcodeanalysissucceeded
-C:\Users\Айрат\Documents\GitHub\training\Training\x64\Debug\NativeCodeAnalysis.read.1.tlog

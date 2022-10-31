@@ -12,7 +12,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snake", "Snake\Snake.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Solutions", "RomanToInteger\RomanToInteger.vcxproj", "{7E37DBD4-D73C-4D2B-BDA3-6802FEB2AD3C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Macletsov tasks", "Macletsov tasks\Macletsov tasks.vcxproj", "{64044B80-911C-4036-A14F-7220E535AA25}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dyn_Int", "MyBigInteger\BigInt.vcxproj", "{13CAD6C3-12EC-40DC-851D-A36855053BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,14 +62,14 @@ Global
 		{7E37DBD4-D73C-4D2B-BDA3-6802FEB2AD3C}.Release|x64.Build.0 = Release|x64
 		{7E37DBD4-D73C-4D2B-BDA3-6802FEB2AD3C}.Release|x86.ActiveCfg = Release|Win32
 		{7E37DBD4-D73C-4D2B-BDA3-6802FEB2AD3C}.Release|x86.Build.0 = Release|Win32
-		{64044B80-911C-4036-A14F-7220E535AA25}.Debug|x64.ActiveCfg = Debug|x64
-		{64044B80-911C-4036-A14F-7220E535AA25}.Debug|x64.Build.0 = Debug|x64
-		{64044B80-911C-4036-A14F-7220E535AA25}.Debug|x86.ActiveCfg = Debug|Win32
-		{64044B80-911C-4036-A14F-7220E535AA25}.Debug|x86.Build.0 = Debug|Win32
-		{64044B80-911C-4036-A14F-7220E535AA25}.Release|x64.ActiveCfg = Release|x64
-		{64044B80-911C-4036-A14F-7220E535AA25}.Release|x64.Build.0 = Release|x64
-		{64044B80-911C-4036-A14F-7220E535AA25}.Release|x86.ActiveCfg = Release|Win32
-		{64044B80-911C-4036-A14F-7220E535AA25}.Release|x86.Build.0 = Release|Win32
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Debug|x64.ActiveCfg = Debug|x64
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Debug|x64.Build.0 = Debug|x64
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Debug|x86.ActiveCfg = Debug|Win32
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Debug|x86.Build.0 = Debug|Win32
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Release|x64.ActiveCfg = Release|x64
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Release|x64.Build.0 = Release|x64
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Release|x86.ActiveCfg = Release|Win32
+		{13CAD6C3-12EC-40DC-851D-A36855053BC3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

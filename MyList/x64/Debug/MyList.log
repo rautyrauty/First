@@ -1,4 +1,0 @@
-﻿  MyList.cpp
-D:\repositories\training\MyList\MyList.cpp(245,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-MSVCRTD.lib(exe_main.obj) : error LNK2019: ссылка на неразрешенный внешний символ main в функции "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ).
-D:\repositories\training\x64\Debug\MyList.exe : fatal error LNK1120: неразрешенных внешних элементов: 1

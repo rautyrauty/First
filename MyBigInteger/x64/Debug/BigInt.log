@@ -1,0 +1,6 @@
+﻿  big_int.cpp
+  digits_array.cpp
+D:\repositories\training\MyBigInteger\digits_array.cpp(179,2): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  main.cpp
+  Создание кода...
+  BigInt.vcxproj -> D:\repositories\training\x64\Debug\BigInteger.exe

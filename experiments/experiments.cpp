@@ -1,10 +1,12 @@
 #include <iostream>
-#include <vector>
+#include <stdexcept>
+
+#include <Windows.h>
+
 using namespace std;
+
 int main()
 {
-	vector<vector<int>> a;
-	cout << a.size() << '\n';
-	a.push_back({});
-	cout << a.size() << ' ' << a[0].size() << '\n';
+	for (size_t i = 0; i < 256; i += 1) cout << char(i) << ' ' << i << '\n';
+	return 0;
 }
