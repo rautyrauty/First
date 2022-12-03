@@ -6,7 +6,10 @@ class MenuBtn : public Button
 protected:
 	static uint8_t open_slots_setting;
 public:
-	MenuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+	MenuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) 
+	{
+		open_slots_setting = 3;
+	}
 };
 
 class PlayBtn : public MenuBtn
@@ -36,11 +39,26 @@ public:
 	void Click(Cursore* crsr) override;
 };
 
+class SudokuBtn : public Button
+{
+public:
+	SudokuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
+
+class ReturnToMenuBtn : public Button
+{
+public:
+	ReturnToMenuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
 
 class Sudoku : public Layout
 {
-	uint8_t open_slots_count;
-	uint8_t 
 	Layout* menu;
 
 	BtnNode table[9][9];
@@ -48,7 +66,7 @@ class Sudoku : public Layout
 	BtnNode check_nd;
 public:
 
-	Sudoku()
+	Sudoku(const uint8_t& open_slots_setting)
 	{
 		for (uint8_t i = 0; i < 9; i += 1)
 		{
