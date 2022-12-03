@@ -21,10 +21,7 @@
     <ClCompile Include="sudoku.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="buttons.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="cursore.cpp">
+    <ClCompile Include="tools.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +29,7 @@
     <ClInclude Include="sudoku.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="buttons.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="cursore.h">
+    <ClInclude Include="tools.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -127,14 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="buttons.cpp" />
-    <ClCompile Include="cursore.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sudoku.cpp" />
+    <ClCompile Include="tools.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buttons.h" />
-    <ClInclude Include="cursore.h" />
+    <ClInclude Include="tools.h" />
     <ClInclude Include="sudoku.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
