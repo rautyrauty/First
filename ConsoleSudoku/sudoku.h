@@ -5,10 +5,7 @@ class OpenSlotsOptionBtn : public Button
 {
 	uint8_t open_slots_count;
 public:
-	OpenSlotsOptionBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) 
-	{
-		open_slots_count = 3;
-	}
+	OpenSlotsOptionBtn(const char*& string, short x, short y, WORD color = NULL);
 
 	uint8_t GetOpenSlots();
 	void Flashes() override;
@@ -18,7 +15,7 @@ public:
 class ExitBtn : public Button
 {
 public:
-	ExitBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+	ExitBtn(const char*& string, short x, short y, WORD color = NULL);
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };

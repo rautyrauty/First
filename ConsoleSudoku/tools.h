@@ -62,7 +62,7 @@ class Layout
 	bool is_rendered;
 public:
 	bool IsRendered() const;
-	void ConnectWith(const SwitchLtBtn& btn) const;
+	void ConnectWith(SwitchLtBtn* btn);
 
 	virtual void Render() = 0;
 	virtual BtnNode* GetStartNode() const = 0;

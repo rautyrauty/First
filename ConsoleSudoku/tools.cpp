@@ -14,7 +14,6 @@ Label::~Label()
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hStdOut, { x,y });
 	for (size_t i = 0; text[i] != ' \0'; i += 1) std::cout << ' ';
-	delete[] text;
 }
 
 void Label::SetText(const char*& new_text)
@@ -42,6 +41,7 @@ void Label::Render() const
 Button::Button(const char*& string, short x, short y, WORD color) : Label(string, x, y, color)
 {
 	flash_countdown = 0;
+	flash_lever = true;
 }
 
 SwitchLtBtn::SwitchLtBtn(const char*& string, short x, short y, WORD color = NULL) : Button(string, x, y, color) {}
@@ -54,10 +54,12 @@ void SwitchLtBtn::SetLayout(Layout* lt)
 void SwitchLtBtn::Flashes()
 {
 	flash_countdown++;
-	if (flash_countdown % 7 == 0)
+	Sleep(100);
+	if (flash_countdown % 50 == 0)
 	{
 		if (flash_lever) SetColor(NULL);
 		else SetColor(BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		flash_lever = !flash_lever;
 	}
 }
 
@@ -65,6 +67,17 @@ void SwitchLtBtn::Click(Cursore* crsr)
 {
 	crsr->SetLayout(lt);
 	crsr->SetNode(lt->GetStartNode());
+}
+
+
+bool Layout::IsRendered() const
+{
+	return is_rendered;
+}
+
+void Layout::ConnectWith(SwitchLtBtn* btn) 
+{
+	btn->SetLayout(this);
 }
 
 
@@ -129,9 +142,5 @@ void Cursore::ExecActionHandler()
 	}
 }
 
-bool Layout::IsRendered() const
-{
-	return is_rendered;
-}
 
 
