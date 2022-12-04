@@ -12,24 +12,40 @@ protected:
 	short y;
 	WORD color;
 public:
-	void Render() const;
-
 	Label(const char*& string, short x, short y, WORD color = NULL);
 	~Label();
+
 	void SetText(const char*& value);
 	void SetColor(WORD color);
+	void Render() const;
 };
 
 // Класс кнопки, позволяющий нажимать на надпись и делать её мигающей
 class Button : public Label
 {
+protected:
+	uint8_t flash_countdown;
+	bool flash_lever;
 public:
-	Button(char*& itext, short ix, short iy, WORD btn_color = NULL) : Label(itext, ix, iy, btn_color) {}
+	Button(const char*& string, short x, short y, WORD color = NULL);
 
-	virtual void Flashes() const = 0;
+	virtual void Flashes() = 0;
 	virtual void Click(Cursore* crsr) = 0;
 };
 
+class Layout;
+
+class SwitchLtBtn : public Button
+{
+	Layout* lt;
+public:
+	SwitchLtBtn(const char*& string, short x, short y, WORD color = NULL);
+
+	void SetLayout(Layout* lt);
+
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
 
 // связка, созданная для возможности курсора перемещаться по кнопкам
 struct BtnNode
@@ -41,29 +57,15 @@ struct BtnNode
 	BtnNode* right = nullptr;
 };
 
-class SwitchLtBtn : public Button
-{
-	Layout* lt;
-public:
-	SwitchLtBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
-
-	void Flashes() override;
-	void Click(Cursore* crsr) override;
-};
-
-
 class Layout
 {
 	bool is_rendered;
 public:
-	bool IsRendered() const
-	{ 
-		return is_rendered; 
-	}
-	virtual void Render() = 0;
-	virtual BtnNode* GetStartNode() const  = 0;
-
+	bool IsRendered() const;
 	void ConnectWith(const SwitchLtBtn& btn) const;
+
+	virtual void Render() = 0;
+	virtual BtnNode* GetStartNode() const = 0;
 };
 
 // Позволяет пользователю перемещаться по  связкам 
@@ -72,22 +74,11 @@ class Cursore
 	Layout* crnt_lt;
 	BtnNode* crnt_nd;
 public:
-	void SetLayout(Layout* new_lt)
-	{
-		crnt_lt = new_lt;
-	}
+	Cursore(Layout* start_lt, BtnNode* start_nd = nullptr);
 
-	void SetNode(BtnNode* new_nd)
-	{
-		crnt_nd = new_nd;
-	}
-
-	Cursore(Layout* start_lt, BtnNode* start_nd = nullptr)
-	{ 
-		crnt_lt = start_lt; 
-		if (start_nd) crnt_nd = start_nd;
-		else crnt_nd = start_lt->GetStartNode();
-	}
 	void Set(bool mode, const size_t& size);
-	void ActionHandler();
+	void SetLayout(Layout* new_lt);
+	void SetNode(BtnNode* new_nd);
+
+	void ExecActionHandler();
 };
