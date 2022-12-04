@@ -44,14 +44,21 @@ public:
 
 class CheckBtn : public Button
 {
-	Label* console;
+	Sudoku* sdk;
 public:
-	CheckBtn(Sudoku* console, const char*& string, short x, short y, WORD color = NULL);
+	CheckBtn(Sudoku* sdk, const char*& string, short x, short y, WORD color = NULL);
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
-
+class GetSolutionBtn : public Button
+{
+	Sudoku* sdk;
+public:
+	GetSolutionBtn(Sudoku* sdk, const char*& string, short x, short y, WORD color = NULL);
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
 
 class Sudoku : public Layout
 {
@@ -61,24 +68,13 @@ class Sudoku : public Layout
 
 	Label console;
 public:
-	Sudoku(uint8_t open_slots_count)
-	{
-		for (uint8_t i = 0; i < 9; i += 1)
-		{
-			for (uint8_t j = 0; j < 9; j += 1)
-			{
-				if (i == 0) table[i][j].up = nullptr;
-				else table[i][j].up = &table[i-1][j];
-			}
-		}
-	}
-	void Connect(Layout* lt);
+	Sudoku(uint8_t open_slots_count);
 
 	void Render() override;
 	BtnNode* GetStartNode() const override;
 
-	void PrintCheckResult(const char*& text);
-	void GenerateNewSudoku();
+	void Check();
+	void GetSolution();
 };
 
 class Menu : public Layout
