@@ -1,72 +1,40 @@
 #pragma once
 #include "tools.h"
 
-class MenuBtn : public Button
+class OpenSlotsOptionBtn : public Button
 {
-protected:
-	static uint8_t open_slots_setting;
+	uint8_t open_slots_count;
 public:
-	MenuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) 
+	OpenSlotsOptionBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) 
 	{
-		open_slots_setting = 3;
+		open_slots_count = 3;
 	}
+
+	uint8_t GetOpenSlots();
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
 };
 
-class PlayBtn : public MenuBtn
+class ExitBtn : public Button
 {
 public:
-	PlayBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : MenuBtn(itext, ix, iy, btn_color) {}
+	ExitBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
 
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
-class OpenSlotsOptionBtn : public MenuBtn
-{
-public:
-	OpenSlotsOptionBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : MenuBtn(itext, ix, iy, btn_color) {}
-
-	void Flashes() override;
-	void Click(Cursore* crsr) override;
-};
-
-class ExitBtn : public MenuBtn
-{
-public:
-	ExitBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : MenuBtn(itext, ix, iy, btn_color) {}
-
-	void Flashes() override;
-	void Click(Cursore* crsr) override;
-};
-
-class SudokuBtn : public Button
-{
-public:
-	SudokuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
-
-	void Flashes() override;
-	void Click(Cursore* crsr) override;
-};
-
-class ReturnToMenuBtn : public Button
-{
-public:
-	ReturnToMenuBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
-
-	void Flashes() override;
-	void Click(Cursore* crsr) override;
-};
 
 class Sudoku : public Layout
 {
 	Layout* menu;
 
 	BtnNode table[9][9];
-	BtnNode return_nd;
+	SwitchLtBtn return_nd;
 	BtnNode check_nd;
 public:
 
-	Sudoku(const uint8_t& open_slots_setting)
+	Sudoku()
 	{
 		for (uint8_t i = 0; i < 9; i += 1)
 		{
@@ -77,14 +45,18 @@ public:
 			}
 		}
 	}
+	void Connect(Layout* lt);
+
 	void Render() override;
-	BtnNode* GetStartNode() override;
+	BtnNode* GetStartNode() const override;
+	void GenerateNewSudoku();
 };
 
 class Menu : public Layout
 {
 
 	BtnNode pl_nd;
+
 	BtnNode gs_nd;
 	BtnNode ex_nd;
 
@@ -92,5 +64,8 @@ public:
 	Menu();
 
 	void Render() override;
-	BtnNode* GetStartNode() override;
+	BtnNode* GetStartNode() const override;
+
+	void Connect(Layout* lt);
+	void GetOpenSlotsCount();
 };

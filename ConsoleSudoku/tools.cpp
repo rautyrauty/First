@@ -1,14 +1,18 @@
 #include "tools.h"
 
-Label::Label(char* itext, short ix, short iy, WORD btn_color)
+Label::Label(const char* itext, short ix, short iy, WORD btn_color)
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdOut, btn_color);
 	SetConsoleCursorPosition(hStdOut, { ix,iy });
-	std::cout << itext;
+	if(itext) std::cout << itext;
 
-	text = itext;
-	itext = nullptr;
+	text[256] = '\0';
+	for (uint8_t i = 0; i < 255; i += 1)
+	{
+		text[i] = itext[i];
+		if (itext[i] == '\0') break;
+	}
 	x = ix;
 	y = iy;
 }

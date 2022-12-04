@@ -7,11 +7,11 @@
 class Label
 {
 protected:
-	char* text;
+	char text[256];
 	short x;
 	short y;
 public:
-	Label(char* itext, short ix, short iy, WORD btn_color = NULL);
+	Label(const char* itext, short ix, short iy, WORD btn_color = NULL);
 	//Label(char* itext, short ix, short iy) : Label(itext, ix, iy, NULL) {			}
 	~Label();
 	void SwitchColor(WORD btn_color);
@@ -21,7 +21,7 @@ public:
 class Button : public Label
 {
 public:
-	Button(char* itext, short ix, short iy, WORD btn_color = NULL) : Label(itext, ix, iy, btn_color) {}
+	Button(char*& itext, short ix, short iy, WORD btn_color = NULL) : Label(itext, ix, iy, btn_color) {}
 
 	virtual void Flashes() = 0;
 	virtual void Click(Cursore* crsr) = 0;
@@ -36,23 +36,31 @@ struct BtnNode
 	BtnNode* down = nullptr;
 	BtnNode* left = nullptr;
 	BtnNode* right = nullptr;
-
-	~BtnNode() 
-	{ 
-		delete btn;
-	}
 };
+
+class SwitchLtBtn : public Button
+{
+	Layout* lt;
+public:
+	SwitchLtBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
+
 
 class Layout
 {
 	bool is_rendered;
 public:
-	bool IsRendered() 
+	bool IsRendered() const
 	{ 
 		return is_rendered; 
 	}
 	virtual void Render() = 0;
-	virtual BtnNode* GetStartNode() = 0;
+	virtual BtnNode* GetStartNode() const  = 0;
+
+	void ConnectWith(const SwitchLtBtn& btn) const;
 };
 
 // ѕозвол€ет пользователю перемещатьс€ по  св€зкам 
