@@ -19,11 +19,18 @@ class ExitBtn : public Button
 {
 public:
 	ExitBtn(char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
-
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
+class CheckBtn : public Button
+{
+	Sudoku* sdk;
+public:
+	CheckBtn(Sudoku* isdk, char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
 
 class Sudoku : public Layout
 {
@@ -34,7 +41,7 @@ class Sudoku : public Layout
 	BtnNode check_nd;
 public:
 
-	Sudoku()
+	Sudoku(uint8_t open_slots_count)
 	{
 		for (uint8_t i = 0; i < 9; i += 1)
 		{
@@ -49,6 +56,8 @@ public:
 
 	void Render() override;
 	BtnNode* GetStartNode() const override;
+
+	void Check();
 	void GenerateNewSudoku();
 };
 

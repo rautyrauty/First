@@ -10,11 +10,14 @@ protected:
 	char text[256];
 	short x;
 	short y;
+	WORD color;
 public:
-	Label(const char* itext, short ix, short iy, WORD btn_color = NULL);
-	//Label(char* itext, short ix, short iy) : Label(itext, ix, iy, NULL) {			}
+	void Render() const;
+
+	Label(const char*& string, short x, short y, WORD color = NULL);
 	~Label();
-	void SwitchColor(WORD btn_color);
+	void SetText(const char*& value);
+	void SetColor(WORD color);
 };
 
 //  ласс кнопки, позвол€ющий нажимать на надпись и делать еЄ мигающей
@@ -23,7 +26,7 @@ class Button : public Label
 public:
 	Button(char*& itext, short ix, short iy, WORD btn_color = NULL) : Label(itext, ix, iy, btn_color) {}
 
-	virtual void Flashes() = 0;
+	virtual void Flashes() const = 0;
 	virtual void Click(Cursore* crsr) = 0;
 };
 

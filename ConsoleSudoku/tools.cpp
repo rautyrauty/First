@@ -1,20 +1,21 @@
 #include "tools.h"
 
-Label::Label(const char* itext, short ix, short iy, WORD btn_color)
+void Label::Render() const
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hStdOut, btn_color);
-	SetConsoleCursorPosition(hStdOut, { ix,iy });
-	if(itext) std::cout << itext;
+	SetConsoleTextAttribute(hStdOut, color);
+	SetConsoleCursorPosition(hStdOut, { x,y });
+	std::cout << text;
+}
 
-	text[256] = '\0';
-	for (uint8_t i = 0; i < 255; i += 1)
-	{
-		text[i] = itext[i];
-		if (itext[i] == '\0') break;
-	}
-	x = ix;
-	y = iy;
+Label::Label(const char*& string, short x, short y, WORD color = NULL)
+{
+	SetText(string);
+	SetColor(color);
+	Render();
+
+	this->x = x;
+	this->y = y;
 }
 
 Label::~Label()
@@ -25,13 +26,20 @@ Label::~Label()
 	delete[] text;
 }
 
-void Label::SwitchColor(WORD btn_color)
+void Label::SetText(const char*& new_text)
 {
-	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hStdOut, btn_color);
-	SetConsoleCursorPosition(hStdOut, { x,y });
-	std::cout << text;
+	for (uint8_t i = 0; true; i += 1)
+	{
+		text[i] = new_text[i];
+		if (new_text[i] == '\0') break;
+	}
 }
+
+void Label::SetColor(WORD color)
+{
+	this->color = color;
+}
+
 void Cursore::Set(bool mode, const size_t& size)
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
