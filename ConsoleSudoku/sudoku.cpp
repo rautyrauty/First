@@ -1,7 +1,7 @@
 #include "sudoku.h"
 OpenSlotsOptionBtn::OpenSlotsOptionBtn(const char*& string, short x, short y, WORD color = NULL) : Button(string, x, y, color)
 {
-	open_slots_count = 3;
+	open_slots_count = 20;
 }
 
 uint8_t OpenSlotsOptionBtn::GetOpenSlots()
@@ -20,7 +20,6 @@ void OpenSlotsOptionBtn::Flashes()
 		flash_lever = !flash_lever;
 	}
 }
-
 void OpenSlotsOptionBtn::Click(Cursore* crsr)
 {
 	open_slots_count += 1;
@@ -44,4 +43,23 @@ void ExitBtn::Flashes()
 void ExitBtn::Click(Cursore* crsr)
 {
 	exit(0);
+}
+
+CheckBtn::CheckBtn(Sudoku* isdk, const char*& string, short x, short y, WORD color = NULL) : Button(string, x, y, color) {}
+
+void CheckBtn::Flashes()
+{
+	flash_countdown++;
+	Sleep(100);
+	if (flash_countdown % 50 == 0)
+	{
+		if (flash_lever) SetColor(BACKGROUND_BLUE);
+		else SetColor(BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		flash_lever = !flash_lever;
+	}	
+}
+
+void CheckBtn::Click(Cursore* crsr)
+{
+	sdk->Check();
 }

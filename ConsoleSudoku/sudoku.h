@@ -3,11 +3,33 @@
 
 class OpenSlotsOptionBtn : public Button
 {
-	uint8_t open_slots_count;
+	static uint8_t open_slots_count;
 public:
+	static uint8_t GiveCount();
+
 	OpenSlotsOptionBtn(const char*& string, short x, short y, WORD color = NULL);
 
 	uint8_t GetOpenSlots();
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
+
+// Та хуйня ради которой я сделал статичные переменные
+class CreateSudokuBtn : public Button
+{
+public:
+	CreateSudokuBtn(const char*& string, short x, short y, WORD color = NULL);
+
+	void Flashes() override;
+	void Click(Cursore* crsr) override;
+};
+
+// Та хуйня ради которой я сделал статичные переменные
+class CreateMenuBtn : public Button
+{
+public:
+	CreateMenuBtn(const char*& string, short x, short y, WORD color = NULL);
+
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
@@ -22,22 +44,23 @@ public:
 
 class CheckBtn : public Button
 {
-	Sudoku* sdk;
+	Label* console;
 public:
-	CheckBtn(Sudoku* isdk, char* itext, short ix, short iy, WORD btn_color = NULL) : Button(itext, ix, iy, btn_color) {}
+	CheckBtn(Sudoku* console, const char*& string, short x, short y, WORD color = NULL);
 	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
+
+
 class Sudoku : public Layout
 {
-	Layout* menu;
-
 	BtnNode table[9][9];
 	SwitchLtBtn return_nd;
 	BtnNode check_nd;
-public:
 
+	Label console;
+public:
 	Sudoku(uint8_t open_slots_count)
 	{
 		for (uint8_t i = 0; i < 9; i += 1)
@@ -54,7 +77,7 @@ public:
 	void Render() override;
 	BtnNode* GetStartNode() const override;
 
-	void Check();
+	void PrintCheckResult(const char*& text);
 	void GenerateNewSudoku();
 };
 
