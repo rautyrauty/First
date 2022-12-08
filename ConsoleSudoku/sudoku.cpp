@@ -7,7 +7,6 @@ OpenSlotsOptionBtn::OpenSlotsOptionBtn(short x, short y)
 	: 
 	Button("20", x, y)
 {
-	open_slots_count = 20;
 }
 
 void OpenSlotsOptionBtn::Click(Cursore* crsr)
@@ -38,20 +37,9 @@ CreateSudokuBtn::CreateSudokuBtn(short x, short y)
 
 void CreateSudokuBtn::Click(Cursore* crsr)
 {
-	Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount()));
+	//Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount()));
+	MessageBeep(MB_ICONQUESTION);
 }
-
-CreateMenuBtn::CreateMenuBtn(short x, short y)
-	:
-	Button("Return", x, y, BACKGROUND_GREEN)
-{
-}
-
-void CreateMenuBtn::Click(Cursore* crsr)
-{
-	Application::GetAdress()->SwitchLayout(new Menu());
-}
-
 
 ExitBtn::ExitBtn(short x, short y) 
 	:
@@ -62,79 +50,126 @@ void ExitBtn::Click(Cursore* crsr)
 {
 	exit(0);
 }
+//
+//CreateMenuBtn::CreateMenuBtn(short x, short y)
+//	:
+//	Button("Return", x, y, BACKGROUND_GREEN)
+//{
+//}
+//
+//void CreateMenuBtn::Click(Cursore* crsr)
+//{
+//	Application::GetAdress()->SwitchLayout(new Menu());
+//}
+//
+//CheckBtn::CheckBtn(Sudoku* sdk, short x, short y) 
+//	: 
+//	Button("Check", x, y, NULL)
+//{
+//	this->sdk = sdk;
+//}
+//
+//void CheckBtn::Click(Cursore* crsr)
+//{
+//	sdk->Check();
+//}
+//
+//GetSolutionBtn::GetSolutionBtn(Sudoku* sdk, short x, short y)
+//	:
+//	Button("Get Solution", x, y, BACKGROUND_BLUE)
+//{
+//	this->sdk = sdk;
+//}
+//
+//void GetSolutionBtn::Click(Cursore* crsr)
+//{
+//	sdk->GetSolution();
+//}
+//
+//DevModeBtn::DevModeBtn(Sudoku* sdk, short x, short y)
+//	:
+//	Button("Developer Mode", x, y, BACKGROUND_BLUE)
+//{
+//	this->sdk = sdk;
+//}
+//
+//void DevModeBtn::Click(Cursore* crsr)
+//{
+//	sdk->SwitchDevMode();
+//}
+//
+//SdkBtn::SdkBtn(Sudoku* sdk, short x, short y) 
+//	: 
+//	Button("0", x, y, BACKGROUND_GREEN)
+//{
+//	this->sdk = sdk;
+//	num = 0;
+//	is_locked = false;
+//}
+//
+//
+//void SdkBtn::LockUp()
+//{
+//	is_locked = !is_locked;
+//}
+//
+//void SdkBtn::SetNum(const uint8_t& n)
+//{
+//	num = n;
+//	char new_text[2];
+//	new_text[0] = char(n + 48);
+//	new_text[1] = '\n';
+//	SetText(new_text);
+//	Render();
+//}
+//
+//bool SdkBtn::IsLocked() const
+//{
+//	return is_locked;
+//}
+//
+//void SdkBtn::Click(Cursore* crsr)
+//{
+//	if (is_locked) MessageBeep(MB_ICONQUESTION);
+//	else
+//	{
+//		if (num + 1 >= 10) SetNum(0);
+//		else (SetNum(num + 1));
+//	}
+//}
 
-CheckBtn::CheckBtn(Sudoku* sdk, short x, short y) 
-	: 
-	Button("Check", x, y, NULL)
+Menu::Menu() : play{0,0}, option { 0, 20 }, ex{0,1}
 {
-	this->sdk = sdk;
+	Button::Connect(play, option, ConType::LeftRight);
+	Button::Connect(play, ex, ConType::UpDown);
 }
 
-void CheckBtn::Click(Cursore* crsr)
+void Menu::Render()
 {
-	sdk->Check();
+	play.Render();
+	option.Render();
+	ex.Render();
+	is_rendered = true;
 }
 
-GetSolutionBtn::GetSolutionBtn(Sudoku* sdk, short x, short y)
-	:
-	Button("Get Solution", x, y, BACKGROUND_BLUE)
+BtnNode* Menu::GetStartNode()
 {
-	this->sdk = sdk;
+	return play.GetNodeAdress();
 }
 
-void GetSolutionBtn::Click(Cursore* crsr)
+uint8_t Menu::GetOpenSlotsCount() const
 {
-	sdk->GetSolution();
+	return option.GetCount();
 }
 
-DevModeBtn::DevModeBtn(Sudoku* sdk, short x, short y)
-	:
-	Button("Developer Mode", x, y, BACKGROUND_BLUE)
+Layout* SdkAppl::CreateStartLayout()
 {
-	this->sdk = sdk;
+	return (new Menu);
 }
 
-void DevModeBtn::Click(Cursore* crsr)
+SdkAppl::SdkAppl()
 {
-	sdk->SwitchDevMode();
-}
-
-SdkBtn::SdkBtn(Sudoku* sdk, short x, short y) 
-	: 
-	Button("0", x, y, BACKGROUND_GREEN)
-{
-	this->sdk = sdk;
-	num = 0;
-	is_locked = false;
-}
-
-
-void SdkBtn::LockUp()
-{
-	is_locked = !is_locked;
-}
-
-void SdkBtn::SetNum(const uint8_t& n)
-{
-	num = n;
-	char new_text[2];
-	new_text[0] = char(n + 48);
-	new_text[1] = '\n';
-	SetText(new_text);
-	Render();
-}
-
-bool SdkBtn::IsLocked() const
-{
-	return is_locked;
-}
-
-void SdkBtn::Click(Cursore* crsr)
-{
-	if (is_locked) MessageBeep(MB_ICONQUESTION);
-	else
-	{
-		if (num + 1 >= 10) SetNum(0);
-		else (SetNum(num + 1));
-	}
+	adress = this;
+	crnt_lt = CreateStartLayout();
+	crsr.SetNode(crnt_lt->GetStartNode());
 }

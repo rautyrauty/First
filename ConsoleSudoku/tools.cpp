@@ -1,6 +1,6 @@
 #include "tools.h"
 
-Label::Label(const char* string, short x, short y, WORD color = NULL)
+Label::Label(const char* string, short x, short y, WORD color)
 {
 	text = nullptr;
 	SetText(string);
@@ -47,6 +47,7 @@ Button::Button(const char* string, short x, short y, WORD color)
 	Label(string, x, y, color), 
 	dflt_color{color}
 {
+	nd.btn = this;
 	flash_countdown = 0;
 	flash_lever = false;
 }
@@ -98,7 +99,7 @@ bool Layout::IsRendered() const
 	return is_rendered;
 }
 
-Cursore::Cursore(BtnNode* start_nd = nullptr)
+Cursore::Cursore(BtnNode* start_nd)
 {
 	crnt_nd = start_nd;
 }
@@ -125,11 +126,6 @@ void Cursore::Set(bool mode, const size_t& size)
 Application* Application::GetAdress()
 {
 	return adress;
-}
-
-Application::Application()
-{
-	adress = this;
 }
 
 void Application::SwitchLayout(Layout* lt)

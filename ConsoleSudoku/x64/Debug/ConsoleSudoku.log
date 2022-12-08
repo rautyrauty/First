@@ -1,0 +1,3 @@
+﻿  tools.cpp
+D:\repositories\training\ConsoleSudoku\tools.cpp(122,33): warning C4267: =: преобразование из "size_t" в "DWORD"; возможна потеря данных
+  ConsoleSudoku.vcxproj -> D:\repositories\training\x64\Debug\ConsoleSudoku.exe

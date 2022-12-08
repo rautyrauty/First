@@ -28,6 +28,20 @@ enum class ConType
 	LeftRight
 };
 
+class Button;
+
+class Cursore;
+
+// св€зка, созданна€ дл€ возможности курсора перемещатьс€ по кнопкам
+struct BtnNode
+{
+	Button* btn = nullptr;
+	BtnNode* up = nullptr;
+	BtnNode* down = nullptr;
+	BtnNode* left = nullptr;
+	BtnNode* right = nullptr;
+};
+
 //  ласс кнопки, позвол€ющий нажимать на надпись и делать еЄ мигающей
 class Button : public Label
 {
@@ -51,25 +65,16 @@ public:
 };
 
 
-// св€зка, созданна€ дл€ возможности курсора перемещатьс€ по кнопкам
-struct BtnNode
-{
-	Button* btn = nullptr;
-	BtnNode* up = nullptr;
-	BtnNode* down = nullptr;
-	BtnNode* left = nullptr;
-	BtnNode* right = nullptr;
-};
-
 class Layout
 {
+protected:
 	bool is_rendered = false;
 public:
 
 	bool IsRendered() const;
 
 	virtual void Render() = 0;
-	virtual BtnNode* GetStartNode() const = 0;
+	virtual BtnNode* GetStartNode() = 0;
 };
 
 // ѕозвол€ет пользователю перемещатьс€ по  св€зкам 
@@ -90,17 +95,16 @@ public:
 // Ёкземпл€р данного класса в приложении может быть только один!
 class Application
 {
+protected:
 	static Application* adress;
 
 	Layout* crnt_lt;
 	Cursore crsr;
 
-	virtual void CreateStartLayout() = 0;
+	virtual Layout* CreateStartLayout() = 0;
 public:
 
 	static Application* GetAdress();
-
-	Application();
 
 	void SwitchLayout(Layout* lt);
 
