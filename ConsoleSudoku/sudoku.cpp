@@ -41,6 +41,18 @@ void CreateSudokuBtn::Click(Cursore* crsr)
 	Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount()));
 }
 
+CreateMenuBtn::CreateMenuBtn(short x, short y)
+	:
+	Button("Return", x, y, BACKGROUND_GREEN)
+{
+}
+
+void CreateMenuBtn::Click(Cursore* crsr)
+{
+	Application::GetAdress()->SwitchLayout(new Menu());
+}
+
+
 ExitBtn::ExitBtn(short x, short y) 
 	:
 	Button("Exit", x, y, BACKGROUND_RED)
@@ -75,6 +87,17 @@ void GetSolutionBtn::Click(Cursore* crsr)
 	sdk->GetSolution();
 }
 
+
+SdkBtn::SdkBtn(Sudoku* sdk, short x, short y) 
+	: 
+	Button("0", x, y, BACKGROUND_GREEN)
+{
+	this->sdk = sdk;
+	num = 0;
+	is_locked = false;
+}
+
+
 void SdkBtn::SetNum(const uint8_t& n)
 {
 	num = n;
@@ -82,31 +105,31 @@ void SdkBtn::SetNum(const uint8_t& n)
 	new_text[0] = char(n + 48);
 	new_text[1] = '\n';
 	SetText(new_text);
+	Render();
 }
 
-SdkBtn::SdkBtn(const char*& string, short x, short y, WORD color)
+void SdkBtn::Click(Cursore* crsr)
+{
+
+}
+
+DynBtn::DynBtn(short x, short y)
 	:
-	Button(string, x, y, color)
+	SdkBtn("0", x, y, BACKGROUND_GREEN)
+{}
+
+void DynBtn::Click(Cursore* crsr)
 {
-	num = string[0];
+	if (num + 1 >= 10) SetNum(0);
+	else (SetNum(num + 1));
 }
 
-DynBtn::DynBtn(const char*& string, short x, short y)
+LockedBtn::LockedBtn(const char*& string, short x, short y)
 	:
-	SdkBtn(string, x, y, BACKGROUND_GREEN)
-{
+	SdkBtn(string, x, y, BACKGROUND_RED)
+{}
 
-}
-
-void DynBtn::Flashes()
+void LockedBtn::Click(Cursore * crsr)
 {
-	flash_countdown++;
-	Sleep(100);
-	if (flash_countdown % 50 == 0)
-	{
-		if (flash_lever) SetColor(BACKGROUND_GREEN);
-		else SetColor(BACKGROUND_BLUE | BACKGROUND_INTENSITY);
-		flash_lever = !flash_lever;
-		Render();
-	}
+	MessageBeep(MB_ICONQUESTION);
 }

@@ -56,36 +56,38 @@ public:
 	void Click(Cursore* crsr) override;
 };
 
-class SdkBtn : public Button
+class DevModeBtn : public Button
 {
-	uint8_t num;
+	Sudoku* sdk;
 public:
-	void SetNum(const uint8_t& n);
-
-	SdkBtn(short x, short y, WORD color);
-};
-
-class DynBtn : public SdkBtn
-{
-public:
-	DynBtn(short x, short y);
+	DevModeBtn(Sudoku* sdk, short x, short y);
 
 	void Click(Cursore* crsr) override;
 };
 
-class FrozenBtn : public SdkBtn
+class SdkBtn : public Button
 {
+protected:
+	uint8_t num;
+	bool is_locked;
+	Sudoku* sdk;
 public:
-	FrozenBtn(const char*& string, short x, short y);
+	SdkBtn(Sudoku* sdk, short x, short y);
 
+	void LockUp();
+	void SetNum(const uint8_t& n);
+	bool IsLocked() const;
 	void Click(Cursore* crsr) override;
 };
 
 class Sudoku : public Layout
 {
 	BtnNode table[9][9];
-	SwitchLtBtn return_nd;
-	BtnNode check_nd;
+	CreateMenuBtn rtrn;
+	CheckBtn check;
+
+	uint8_t* opn_slts_arr;
+	bool dev_mode;
 
 	Label console;
 public:
@@ -93,7 +95,9 @@ public:
 
 	void Render() override;
 	BtnNode* GetStartNode() const override;
+	bool IsDevMode() const;
 
+	void SwitchDevMode();
 	void Check();
 	void GetSolution();
 };
@@ -101,7 +105,7 @@ public:
 class Menu : public Layout
 {
 
-	BtnNode pl_nd;
+	CreateSudokuBtn play;
 
 	BtnNode gs_nd;
 	BtnNode ex_nd;

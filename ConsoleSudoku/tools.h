@@ -11,7 +11,6 @@ protected:
 	char* text;
 	short x;
 	short y;
-	const WORD dflt_color;
 	WORD color;
 public:
 
@@ -20,7 +19,6 @@ public:
 
 	void SetText(const char* value);
 	void SetColor(WORD color);
-	void SetDfltColor();
 	void Render() const;
 };
 
@@ -30,11 +28,13 @@ class Button : public Label
 protected:
 	uint8_t flash_countdown;
 	bool flash_lever;
+	const WORD dflt_color;
 public:
-
 	Button(const char* string, short x, short y, WORD color = NULL);
 
+	void ReturnDfltColor();
 	void Flashes();
+
 	virtual void Click(Cursore* crsr) = 0;
 };
 

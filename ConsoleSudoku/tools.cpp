@@ -1,6 +1,6 @@
 #include "tools.h"
 
-Label::Label(const char* string, short x, short y, WORD color = NULL) : dflt_color{ color }
+Label::Label(const char* string, short x, short y, WORD color = NULL)
 {
 	text = nullptr;
 	SetText(string);
@@ -34,11 +34,6 @@ void Label::SetColor(WORD color)
 	this->color = color;
 }
 
-void Label::SetDfltColor()
-{
-	SetColor(dflt_color);
-}
-
 void Label::Render() const
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -47,10 +42,18 @@ void Label::Render() const
 	std::cout << text;
 }
 
-Button::Button(const char* string, short x, short y, WORD color) : Label(string, x, y, color)
+Button::Button(const char* string, short x, short y, WORD color) 
+	: 
+	Label(string, x, y, color), 
+	dflt_color{color}
 {
 	flash_countdown = 0;
 	flash_lever = false;
+}
+
+void Button::ReturnDfltColor()
+{
+	SetColor(dflt_color);
 }
 
 void Button::Flashes()
@@ -123,22 +126,22 @@ void Application::ExecHandler()
 
 		if ((GetKeyState(VK_UP)) and (crsr.GetNode()->up))
 		{
-			crsr.GetNode()->btn->SetDfltColor();
+			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->up);
 		}
 		else if ((GetKeyState(VK_DOWN)) and (crsr.GetNode()->down))
 		{
-			crsr.GetNode()->btn->SetDfltColor();
+			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->down);
 		}
 		else if ((GetKeyState(VK_LEFT)) and (crsr.GetNode()->left))
 		{
-			crsr.GetNode()->btn->SetDfltColor();
+			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->left);
 		}
 		else if ((GetKeyState(VK_RIGHT)) and (crsr.GetNode()->right))
 		{
-			crsr.GetNode()->btn->SetDfltColor();
+			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->right);
 		}
 		else if (GetKeyState(VK_RETURN)) // enter
