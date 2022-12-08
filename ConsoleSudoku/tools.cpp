@@ -51,6 +51,21 @@ Button::Button(const char* string, short x, short y, WORD color)
 	flash_lever = false;
 }
 
+void Button::Connect(Button& first, Button& second, ConType ct)
+{
+	switch (ct)
+	{
+	case (ConType::UpDown):
+		first.nd.down = &(second.nd);
+		second.nd.up = &(first.nd);
+		break;
+	case (ConType::LeftRight):
+		first.nd.right = &(second.nd);
+		second.nd.left = &(first.nd);
+		break;
+	}
+}
+
 void Button::ReturnDfltColor()
 {
 	SetColor(dflt_color);
@@ -71,6 +86,11 @@ void Button::Flashes()
 		flash_lever = !flash_lever;
 		Render();
 	}
+}
+
+BtnNode* Button::GetNodeAdress()
+{
+	return &nd;
 }
 
 bool Layout::IsRendered() const

@@ -22,6 +22,12 @@ public:
 	void Render() const;
 };
 
+enum class ConType
+{
+	UpDown,
+	LeftRight
+};
+
 //  ласс кнопки, позвол€ющий нажимать на надпись и делать еЄ мигающей
 class Button : public Label
 {
@@ -29,14 +35,21 @@ protected:
 	uint8_t flash_countdown;
 	bool flash_lever;
 	const WORD dflt_color;
+
+	BtnNode nd;
 public:
 	Button(const char* string, short x, short y, WORD color = NULL);
+
+	static void Connect(Button& first, Button& second, ConType ct);
 
 	void ReturnDfltColor();
 	void Flashes();
 
+	BtnNode* GetNodeAdress();
+
 	virtual void Click(Cursore* crsr) = 0;
 };
+
 
 // св€зка, созданна€ дл€ возможности курсора перемещатьс€ по кнопкам
 struct BtnNode
@@ -50,7 +63,7 @@ struct BtnNode
 
 class Layout
 {
-	bool is_rendered;
+	bool is_rendered = false;
 public:
 
 	bool IsRendered() const;

@@ -12,7 +12,6 @@ public:
 	void Click(Cursore* crsr) override;
 };
 
-// Та хуйня ради которой я сделал статичные переменные
 class CreateSudokuBtn : public Button
 {
 public:
@@ -21,7 +20,6 @@ public:
 	void Click(Cursore* crsr) override;
 };
 
-// Та хуйня ради которой я сделал статичные переменные
 class CreateMenuBtn : public Button
 {
 public:
@@ -85,8 +83,8 @@ class Sudoku : public Layout
 	BtnNode table[9][9];
 	CreateMenuBtn rtrn;
 	CheckBtn check;
+	DevModeBtn dev;
 
-	uint8_t* opn_slts_arr;
 	bool dev_mode;
 
 	Label console;
@@ -106,9 +104,8 @@ class Menu : public Layout
 {
 
 	CreateSudokuBtn play;
-
-	BtnNode gs_nd;
-	BtnNode ex_nd;
+	OpenSlotsOptionBtn option;
+	ExitBtn ex;
 
 public:
 	Menu();

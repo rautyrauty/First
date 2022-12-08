@@ -87,6 +87,17 @@ void GetSolutionBtn::Click(Cursore* crsr)
 	sdk->GetSolution();
 }
 
+DevModeBtn::DevModeBtn(Sudoku* sdk, short x, short y)
+	:
+	Button("Developer Mode", x, y, BACKGROUND_BLUE)
+{
+	this->sdk = sdk;
+}
+
+void DevModeBtn::Click(Cursore* crsr)
+{
+	sdk->SwitchDevMode();
+}
 
 SdkBtn::SdkBtn(Sudoku* sdk, short x, short y) 
 	: 
@@ -98,6 +109,11 @@ SdkBtn::SdkBtn(Sudoku* sdk, short x, short y)
 }
 
 
+void SdkBtn::LockUp()
+{
+	is_locked = !is_locked;
+}
+
 void SdkBtn::SetNum(const uint8_t& n)
 {
 	num = n;
@@ -108,28 +124,17 @@ void SdkBtn::SetNum(const uint8_t& n)
 	Render();
 }
 
+bool SdkBtn::IsLocked() const
+{
+	return is_locked;
+}
+
 void SdkBtn::Click(Cursore* crsr)
 {
-
-}
-
-DynBtn::DynBtn(short x, short y)
-	:
-	SdkBtn("0", x, y, BACKGROUND_GREEN)
-{}
-
-void DynBtn::Click(Cursore* crsr)
-{
-	if (num + 1 >= 10) SetNum(0);
-	else (SetNum(num + 1));
-}
-
-LockedBtn::LockedBtn(const char*& string, short x, short y)
-	:
-	SdkBtn(string, x, y, BACKGROUND_RED)
-{}
-
-void LockedBtn::Click(Cursore * crsr)
-{
-	MessageBeep(MB_ICONQUESTION);
+	if (is_locked) MessageBeep(MB_ICONQUESTION);
+	else
+	{
+		if (num + 1 >= 10) SetNum(0);
+		else (SetNum(num + 1));
+	}
 }
