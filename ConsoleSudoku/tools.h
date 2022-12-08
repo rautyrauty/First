@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
@@ -7,17 +8,19 @@
 class Label
 {
 protected:
-	char text[256];
+	char* text;
 	short x;
 	short y;
+	const WORD dflt_color;
 	WORD color;
 public:
 
-	Label(const char*& string, short x, short y, WORD color = NULL);
+	Label(const char* string, short x, short y, WORD color = NULL);
 	~Label();
 
-	void SetText(const char*& value);
+	void SetText(const char* value);
 	void SetColor(WORD color);
+	void SetDfltColor();
 	void Render() const;
 };
 
@@ -29,9 +32,9 @@ protected:
 	bool flash_lever;
 public:
 
-	Button(const char*& string, short x, short y, WORD color = NULL);
+	Button(const char* string, short x, short y, WORD color = NULL);
 
-	virtual void Flashes() = 0;
+	void Flashes();
 	virtual void Click(Cursore* crsr) = 0;
 };
 
@@ -82,7 +85,7 @@ class Application
 	virtual void CreateStartLayout() = 0;
 public:
 
-	static Application* GiveAdress();
+	static Application* GetAdress();
 
 	Application();
 

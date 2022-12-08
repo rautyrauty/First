@@ -1,7 +1,8 @@
 #include "tools.h"
 
-Label::Label(const char*& string, short x, short y, WORD color = NULL)
+Label::Label(const char* string, short x, short y, WORD color = NULL) : dflt_color{ color }
 {
+	text = nullptr;
 	SetText(string);
 	SetColor(color);
 	this->x = x;
@@ -14,10 +15,13 @@ Label::~Label()
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hStdOut, { x,y });
 	for (size_t i = 0; text[i] != ' \0'; i += 1) std::cout << ' ';
+	delete[] text;
 }
 
-void Label::SetText(const char*& new_text)
+void Label::SetText(const char* new_text)
 {
+	if (text) delete[] text;
+	text = new char [256];
 	for (uint8_t i = 0; true; i += 1)
 	{
 		text[i] = new_text[i];
@@ -30,6 +34,11 @@ void Label::SetColor(WORD color)
 	this->color = color;
 }
 
+void Label::SetDfltColor()
+{
+	SetColor(dflt_color);
+}
+
 void Label::Render() const
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -38,52 +47,37 @@ void Label::Render() const
 	std::cout << text;
 }
 
-Button::Button(const char*& string, short x, short y, WORD color) : Label(string, x, y, color)
+Button::Button(const char* string, short x, short y, WORD color) : Label(string, x, y, color)
 {
 	flash_countdown = 0;
-	flash_lever = true;
+	flash_lever = false;
 }
 
-SwitchLtBtn::SwitchLtBtn(const char*& string, short x, short y, WORD color = NULL) : Button(string, x, y, color) {}
-
-void SwitchLtBtn::SetLayout(Layout* lt)
-{
-	this->lt = lt;
-}
-
-void SwitchLtBtn::Flashes()
+void Button::Flashes()
 {
 	flash_countdown++;
 	Sleep(100);
 	if (flash_countdown % 50 == 0)
 	{
-		if (flash_lever) SetColor(NULL);
-		else SetColor(BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		if (flash_lever) SetColor(dflt_color);
+		else
+		{
+			if (dflt_color) SetColor(dflt_color | BACKGROUND_INTENSITY);
+			else SetColor(BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+		}
 		flash_lever = !flash_lever;
+		Render();
 	}
 }
-
-void SwitchLtBtn::Click(Cursore* crsr)
-{
-	crsr->SetLayout(lt);
-	crsr->SetNode(lt->GetStartNode());
-}
-
 
 bool Layout::IsRendered() const
 {
 	return is_rendered;
 }
 
-void Layout::ConnectWith(SwitchLtBtn* btn) 
+Cursore::Cursore(BtnNode* start_nd = nullptr)
 {
-	btn->SetLayout(this);
-}
-
-
-void Cursore::SetLayout(Layout* new_lt)
-{
-	crnt_lt = new_lt;
+	crnt_nd = start_nd;
 }
 
 void Cursore::SetNode(BtnNode* new_nd)
@@ -91,11 +85,9 @@ void Cursore::SetNode(BtnNode* new_nd)
 	crnt_nd = new_nd;
 }
 
-Cursore::Cursore(Layout* start_lt, BtnNode* start_nd)
+BtnNode* Cursore::GetNode() const
 {
-	SetLayout(start_lt);
-	if (start_nd) SetNode(start_nd);
-	else SetNode(start_lt->GetStartNode());
+	return crnt_nd;
 }
 
 void Cursore::Set(bool mode, const size_t& size)
@@ -107,40 +99,53 @@ void Cursore::Set(bool mode, const size_t& size)
 	SetConsoleCursorInfo(hStdOut, &structCursoreInfo);
 }
 
-void Cursore::ExecActionHandler()
+Application* Application::GetAdress()
+{
+	return adress;
+}
+
+Application::Application()
+{
+	adress = this;
+}
+
+void Application::SwitchLayout(Layout* lt)
+{
+	delete crnt_lt;
+	crnt_lt = lt;
+}
+
+void Application::ExecHandler()
 {
 	while (true)
 	{
 		if (not crnt_lt->IsRendered()) crnt_lt->Render();
 
-		if ((GetKeyState(VK_UP)) and (crnt_nd->up))
+		if ((GetKeyState(VK_UP)) and (crsr.GetNode()->up))
 		{
-			crnt_nd->btn->SetColor(NULL);
-			crnt_nd = crnt_nd->up;
+			crsr.GetNode()->btn->SetDfltColor();
+			crsr.SetNode(crsr.GetNode()->up);
 		}
-		else if ((GetKeyState(VK_DOWN)) and (crnt_nd->down))
+		else if ((GetKeyState(VK_DOWN)) and (crsr.GetNode()->down))
 		{
-			crnt_nd->btn->SetColor(NULL);
-			crnt_nd = crnt_nd->down;
+			crsr.GetNode()->btn->SetDfltColor();
+			crsr.SetNode(crsr.GetNode()->down);
 		}
-		else if ((GetKeyState(VK_LEFT)) and (crnt_nd->left))
+		else if ((GetKeyState(VK_LEFT)) and (crsr.GetNode()->left))
 		{
-			crnt_nd->btn->SetColor(NULL);
-			crnt_nd = crnt_nd->left;
+			crsr.GetNode()->btn->SetDfltColor();
+			crsr.SetNode(crsr.GetNode()->left);
 		}
-		else if ((GetKeyState(VK_RIGHT)) and (crnt_nd->right))
+		else if ((GetKeyState(VK_RIGHT)) and (crsr.GetNode()->right))
 		{
-			crnt_nd->btn->SetColor(NULL);
-			crnt_nd = crnt_nd->right;
+			crsr.GetNode()->btn->SetDfltColor();
+			crsr.SetNode(crsr.GetNode()->right);
 		}
 		else if (GetKeyState(VK_RETURN)) // enter
 		{
-			crnt_nd->btn->Click(this);
+			crsr.GetNode()->btn->Click(&crsr);
 		}
 
-		crnt_nd->btn->Flashes();
+		crsr.GetNode()->btn->Flashes();
 	}
 }
-
-
-

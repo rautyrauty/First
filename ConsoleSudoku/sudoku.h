@@ -5,12 +5,10 @@ class OpenSlotsOptionBtn : public Button
 {
 	static uint8_t open_slots_count;
 public:
-	static uint8_t GiveCount();
+	static uint8_t GetCount();
 
-	OpenSlotsOptionBtn(const char*& string, short x, short y, WORD color = NULL);
+	OpenSlotsOptionBtn(short x, short y);
 
-	uint8_t GetOpenSlots();
-	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
@@ -18,9 +16,8 @@ public:
 class CreateSudokuBtn : public Button
 {
 public:
-	CreateSudokuBtn(const char*& string, short x, short y, WORD color = NULL);
+	CreateSudokuBtn(short x, short y);
 
-	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
@@ -28,17 +25,16 @@ public:
 class CreateMenuBtn : public Button
 {
 public:
-	CreateMenuBtn(const char*& string, short x, short y, WORD color = NULL);
+	CreateMenuBtn(short x, short y);
 
-	void Flashes() override;
 	void Click(Cursore* crsr) override;
 };
 
 class ExitBtn : public Button
 {
 public:
-	ExitBtn(const char*& string, short x, short y, WORD color = NULL);
-	void Flashes() override;
+	ExitBtn(short x, short y);
+
 	void Click(Cursore* crsr) override;
 };
 
@@ -46,8 +42,8 @@ class CheckBtn : public Button
 {
 	Sudoku* sdk;
 public:
-	CheckBtn(Sudoku* sdk, const char*& string, short x, short y, WORD color = NULL);
-	void Flashes() override;
+	CheckBtn(Sudoku* sdk, short x, short y);
+	
 	void Click(Cursore* crsr) override;
 };
 
@@ -55,8 +51,33 @@ class GetSolutionBtn : public Button
 {
 	Sudoku* sdk;
 public:
-	GetSolutionBtn(Sudoku* sdk, const char*& string, short x, short y, WORD color = NULL);
-	void Flashes() override;
+	GetSolutionBtn(Sudoku* sdk, short x, short y);
+
+	void Click(Cursore* crsr) override;
+};
+
+class SdkBtn : public Button
+{
+	uint8_t num;
+public:
+	void SetNum(const uint8_t& n);
+
+	SdkBtn(short x, short y, WORD color);
+};
+
+class DynBtn : public SdkBtn
+{
+public:
+	DynBtn(short x, short y);
+
+	void Click(Cursore* crsr) override;
+};
+
+class FrozenBtn : public SdkBtn
+{
+public:
+	FrozenBtn(const char*& string, short x, short y);
+
 	void Click(Cursore* crsr) override;
 };
 
