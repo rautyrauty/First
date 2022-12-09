@@ -30,6 +30,8 @@ public:
 
 	void Click(Cursore* crsr) override;
 };
+
+//sdk
 //
 //class CreateMenuBtn : public Button
 //{
@@ -104,11 +106,14 @@ public:
 //	void GetSolution();
 //};
 
+//sdk
+
 class Menu : public Layout
 {
 	CreateSudokuBtn play;
 	OpenSlotsOptionBtn option;
 	ExitBtn ex;
+	Label about_option;
 
 public:
 	Menu();

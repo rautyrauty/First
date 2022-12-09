@@ -49,8 +49,6 @@ Button::Button(const char* string, short x, short y, WORD color)
 	dflt_color{color}
 {
 	nd.btn = this;
-	flash_countdown = 0;
-	flash_lever = false;
 }
 
 void Button::Connect(Button& first, Button& second, ConType ct)
@@ -68,33 +66,15 @@ void Button::Connect(Button& first, Button& second, ConType ct)
 	}
 }
 
-void Button::ReturnDfltColor()
+void Button::SetDfltColor()
 {
 	SetColor(dflt_color);
 	Render();
 }
 
-void Button::Flashes()
+WORD Button::GetDfltColor() const
 {
-	Sleep(100);
-	if (flash_countdown % 5 == 0)
-	{
-		if (flash_lever) SetColor(dflt_color);
-		else
-		{
-			if (dflt_color) SetColor(dflt_color | FOREGROUND_INTENSITY);
-			else SetColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-		}
-		flash_lever = !flash_lever;
-		Render();
-	}
-	flash_countdown++;
-}
-
-void Button::ResetFlashCounter()
-{
-	flash_countdown = 0;
-	flash_lever = false;
+	return dflt_color;
 }
 
 BtnNode* Button::GetNodeAdress()
@@ -134,6 +114,9 @@ bool Cursore::IsBtnExist(Dir d) const
 
 void Cursore::Move(Dir d)
 {
+	current->btn->SetDfltColor();
+	blink_countdown = 0;
+	blink_lever = false;
 	switch (d)
 	{
 	case Dir::up:
@@ -151,11 +134,33 @@ void Cursore::Move(Dir d)
 	}
 }
 
+void Cursore::Click()
+{
+	current->btn->Click(this);
+}
+
+void Cursore::Blink()
+{
+	Sleep(100);
+	if (blink_countdown % 5 == 0)
+	{
+		if (blink_lever) current->btn->SetDfltColor();
+		else
+		{
+			current->btn->SetColor(current->btn->GetDfltColor() | FOREGROUND_INTENSITY);
+		}
+		blink_lever = !blink_lever;
+		current->btn->Render();
+	}
+	blink_countdown++;
+}
+
 void Cursore::MakeInvisible()
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO structCursoreInfo;
 	structCursoreInfo.bVisible = false;
+	structCursoreInfo.dwSize = 1;
 	SetConsoleCursorInfo(hStdOut, &structCursoreInfo);
 }
 
@@ -173,36 +178,35 @@ void Application::SwitchLayout(Layout* lt)
 
 void Application::ExecHandler()
 {
-	crsr.MakeInvisible();
 	while (true)
 	{
-		if (not crnt_lt->IsRendered()) crnt_lt->Render();
+		if (not crnt_lt->IsRendered())
+		{
+			crnt_lt->Render();
+			crsr.MakeInvisible();
+		}
 
 		if ((GetAsyncKeyState(VK_UP)) and (crsr.IsBtnExist(Cursore::Dir::up)))
 		{
-			crsr.GetNode()->btn->ReturnDfltColor();
-			crsr.SetNode(crsr.GetNode()->up);
+			crsr.Move(Cursore::Dir::up);
 		}
 		else if ((GetAsyncKeyState(VK_DOWN)) and (crsr.IsBtnExist(Cursore::Dir::down)))
 		{
-			crsr.GetNode()->btn->ReturnDfltColor();
-			crsr.SetNode(crsr.GetNode()->down);
+			crsr.Move(Cursore::Dir::down);
 		}
 		else if ((GetAsyncKeyState(VK_LEFT)) and (crsr.IsBtnExist(Cursore::Dir::left)))
 		{
-			crsr.GetNode()->btn->ReturnDfltColor();
-			crsr.SetNode(crsr.GetNode()->left);
+			crsr.Move(Cursore::Dir::left);
 		}
 		else if ((GetAsyncKeyState(VK_RIGHT)) and (crsr.IsBtnExist(Cursore::Dir::right)))
 		{
-			crsr.GetNode()->btn->ReturnDfltColor();
-			crsr.SetNode(crsr.GetNode()->right);
+			crsr.Move(Cursore::Dir::right);
 		}
 		else if (GetAsyncKeyState(VK_RETURN)) // enter
 		{
-			crsr.GetNode()->btn->Click(&crsr);
+			crsr.Click();
 		}
 
-		crsr.GetNode()->btn->Flashes();
+		crsr.Blink();
 	}
 }

@@ -14,7 +14,7 @@ protected:
 	WORD color;
 public:
 
-	Label(const char* string, short x, short y, WORD color = NULL);
+	Label(const char* string, short x, short y, WORD color = 7);
 	~Label();
 
 	void SetText(const char* value);
@@ -46,8 +46,6 @@ struct BtnNode
 class Button : public Label
 {
 protected:
-	uint8_t flash_countdown;
-	bool flash_lever;
 	const WORD dflt_color;
 
 	BtnNode nd;
@@ -56,9 +54,8 @@ public:
 
 	static void Connect(Button& first, Button& second, ConType ct);
 
-	void ReturnDfltColor();
-	void Flashes();
-	void ResetFlashCounter();
+	void SetDfltColor();
+	WORD GetDfltColor() const;
 
 
 	BtnNode* GetNodeAdress();
@@ -83,6 +80,8 @@ public:
 class Cursore
 {
 	BtnNode* current;
+	uint8_t blink_countdown;
+	bool blink_lever;
 public:
 
 	Cursore(BtnNode* start_nd = nullptr);
@@ -98,6 +97,8 @@ public:
 	};
 	bool IsBtnExist(Dir d) const;
 	void Move(Dir d);
+	void Click();
+	void Blink();
 
 	void MakeInvisible();
 };

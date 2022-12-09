@@ -38,7 +38,7 @@ CreateSudokuBtn::CreateSudokuBtn(short x, short y)
 void CreateSudokuBtn::Click(Cursore* crsr)
 {
 	//Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount()));
-	MessageBeep(MB_ICONQUESTION);
+	MessageBeep(0);
 }
 
 ExitBtn::ExitBtn(short x, short y) 
@@ -50,6 +50,8 @@ void ExitBtn::Click(Cursore* crsr)
 {
 	exit(0);
 }
+
+//sdk
 //
 //CreateMenuBtn::CreateMenuBtn(short x, short y)
 //	:
@@ -130,7 +132,7 @@ void ExitBtn::Click(Cursore* crsr)
 //
 //void SdkBtn::Click(Cursore* crsr)
 //{
-//	if (is_locked) MessageBeep(MB_ICONQUESTION);
+//	if (is_locked) MessageBeep(0);
 //	else
 //	{
 //		if (num + 1 >= 10) SetNum(0);
@@ -138,7 +140,9 @@ void ExitBtn::Click(Cursore* crsr)
 //	}
 //}
 
-Menu::Menu() : play{0,0}, option { 20, 0 }, ex{0,1}
+//sdk
+
+Menu::Menu() : play{40,12}, option { 77, 12 }, ex{40,14}, about_option{"Count open slots setting: " ,50,12}
 {
 	Button::Connect(play, option, ConType::LeftRight);
 	Button::Connect(play, ex, ConType::UpDown);
@@ -150,6 +154,7 @@ void Menu::Render()
 	play.Render();
 	option.Render();
 	ex.Render();
+	about_option.Render();
 	is_rendered = true;
 }
 
