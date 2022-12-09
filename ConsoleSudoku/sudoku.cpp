@@ -32,7 +32,7 @@ void OpenSlotsOptionBtn::Click(Cursore* crsr)
 
 CreateSudokuBtn::CreateSudokuBtn(short x, short y)
 	: 
-	Button("Play!", x, y, BACKGROUND_GREEN)
+	Button("Play!", x, y, FOREGROUND_GREEN)
 {}
 
 void CreateSudokuBtn::Click(Cursore* crsr)
@@ -43,7 +43,7 @@ void CreateSudokuBtn::Click(Cursore* crsr)
 
 ExitBtn::ExitBtn(short x, short y) 
 	:
-	Button("Exit", x, y, BACKGROUND_RED)
+	Button("Exit", x, y, FOREGROUND_RED)
 {}
 
 void ExitBtn::Click(Cursore* crsr)
@@ -53,7 +53,7 @@ void ExitBtn::Click(Cursore* crsr)
 //
 //CreateMenuBtn::CreateMenuBtn(short x, short y)
 //	:
-//	Button("Return", x, y, BACKGROUND_GREEN)
+//	Button("Return", x, y, FOREGROUND_GREEN)
 //{
 //}
 //
@@ -76,7 +76,7 @@ void ExitBtn::Click(Cursore* crsr)
 //
 //GetSolutionBtn::GetSolutionBtn(Sudoku* sdk, short x, short y)
 //	:
-//	Button("Get Solution", x, y, BACKGROUND_BLUE)
+//	Button("Get Solution", x, y, FOREGROUND_BLUE)
 //{
 //	this->sdk = sdk;
 //}
@@ -88,7 +88,7 @@ void ExitBtn::Click(Cursore* crsr)
 //
 //DevModeBtn::DevModeBtn(Sudoku* sdk, short x, short y)
 //	:
-//	Button("Developer Mode", x, y, BACKGROUND_BLUE)
+//	Button("Developer Mode", x, y, FOREGROUND_BLUE)
 //{
 //	this->sdk = sdk;
 //}
@@ -100,7 +100,7 @@ void ExitBtn::Click(Cursore* crsr)
 //
 //SdkBtn::SdkBtn(Sudoku* sdk, short x, short y) 
 //	: 
-//	Button("0", x, y, BACKGROUND_GREEN)
+//	Button("0", x, y, FOREGROUND_GREEN)
 //{
 //	this->sdk = sdk;
 //	num = 0;
@@ -138,7 +138,7 @@ void ExitBtn::Click(Cursore* crsr)
 //	}
 //}
 
-Menu::Menu() : play{0,0}, option { 0, 20 }, ex{0,1}
+Menu::Menu() : play{0,0}, option { 20, 0 }, ex{0,1}
 {
 	Button::Connect(play, option, ConType::LeftRight);
 	Button::Connect(play, ex, ConType::UpDown);
@@ -146,6 +146,7 @@ Menu::Menu() : play{0,0}, option { 0, 20 }, ex{0,1}
 
 void Menu::Render()
 {
+	system("CLS");
 	play.Render();
 	option.Render();
 	ex.Render();

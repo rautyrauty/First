@@ -1,7 +1,2 @@
-﻿  Game.cpp
-D:\repositories\training\Snake\Game.cpp(36,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-D:\repositories\training\Snake\Game.cpp(67,13): warning C4805: ==: небезопасное смешение типа "int" и типа "bool" в операции
-D:\repositories\training\Snake\Game.cpp(111,13): warning C4805: ==: небезопасное смешение типа "uint8_t" и типа "bool" в операции
-D:\repositories\training\Snake\Game.cpp(143,4): warning C4809: в операторе switch имеется ненужная метка "default"; все возможные метки "case" уже заданы
-D:\repositories\training\Snake\Game.cpp(185,58): warning C4267: =: преобразование из "size_t" в "uint8_t"; возможна потеря данных
+﻿  LINK : не найден или не выполнена сборка D:\repositories\training\x64\Debug\Snake.exe при последней инкрементной компоновке; выполняется полная компоновка
   Snake.vcxproj -> D:\repositories\training\x64\Debug\Snake.exe

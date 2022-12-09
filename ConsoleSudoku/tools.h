@@ -52,12 +52,14 @@ protected:
 
 	BtnNode nd;
 public:
-	Button(const char* string, short x, short y, WORD color = NULL);
+	Button(const char* string, short x, short y, WORD color = 7);
 
 	static void Connect(Button& first, Button& second, ConType ct);
 
 	void ReturnDfltColor();
 	void Flashes();
+	void ResetFlashCounter();
+
 
 	BtnNode* GetNodeAdress();
 
@@ -80,15 +82,24 @@ public:
 // Позволяет пользователю перемещаться по  связкам 
 class Cursore
 {
-	BtnNode* crnt_nd;
+	BtnNode* current;
 public:
 
 	Cursore(BtnNode* start_nd = nullptr);
 
 	void SetNode(BtnNode* new_nd);
-	BtnNode* GetNode() const;
 
-	void Set(bool mode, const size_t& size);
+	enum class Dir
+	{
+		up,
+		left,
+		right,
+		down
+	};
+	bool IsBtnExist(Dir d) const;
+	void Move(Dir d);
+
+	void MakeInvisible();
 };
 
 // класс отвечающий за отображение макетов и обработку событий

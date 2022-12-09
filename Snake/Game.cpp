@@ -48,6 +48,7 @@ uint16_t SnakeGame()
 bool GameOver(const uint16_t& tmpScore, const HANDLE& hStdOut)
 {
 	system("CLS"); // clear screen
+	FOREGROUND_RED;
 	uint16_t BestScore = GiveBestScore();
 	if (tmpScore > BestScore) SetBestScore(tmpScore);
 	CursorGoto(Position(55,12));

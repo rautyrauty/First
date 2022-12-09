@@ -3,11 +3,10 @@
 Label::Label(const char* string, short x, short y, WORD color)
 {
 	text = nullptr;
-	SetText(string);
-	SetColor(color);
 	this->x = x;
 	this->y = y;
-	Render();
+	SetText(string);
+	SetColor(color);
 }
 
 Label::~Label()
@@ -27,11 +26,13 @@ void Label::SetText(const char* new_text)
 		text[i] = new_text[i];
 		if (new_text[i] == '\0') break;
 	}
+	Render();
 }
 
 void Label::SetColor(WORD color)
 {
 	this->color = color;
+	Render();
 }
 
 void Label::Render() const
@@ -70,23 +71,30 @@ void Button::Connect(Button& first, Button& second, ConType ct)
 void Button::ReturnDfltColor()
 {
 	SetColor(dflt_color);
+	Render();
 }
 
 void Button::Flashes()
 {
-	flash_countdown++;
 	Sleep(100);
-	if (flash_countdown % 50 == 0)
+	if (flash_countdown % 5 == 0)
 	{
 		if (flash_lever) SetColor(dflt_color);
 		else
 		{
-			if (dflt_color) SetColor(dflt_color | BACKGROUND_INTENSITY);
-			else SetColor(BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+			if (dflt_color) SetColor(dflt_color | FOREGROUND_INTENSITY);
+			else SetColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 		}
 		flash_lever = !flash_lever;
 		Render();
 	}
+	flash_countdown++;
+}
+
+void Button::ResetFlashCounter()
+{
+	flash_countdown = 0;
+	flash_lever = false;
 }
 
 BtnNode* Button::GetNodeAdress()
@@ -101,25 +109,53 @@ bool Layout::IsRendered() const
 
 Cursore::Cursore(BtnNode* start_nd)
 {
-	crnt_nd = start_nd;
+	current = start_nd;
 }
 
 void Cursore::SetNode(BtnNode* new_nd)
 {
-	crnt_nd = new_nd;
+	current = new_nd;
 }
 
-BtnNode* Cursore::GetNode() const
+bool Cursore::IsBtnExist(Dir d) const
 {
-	return crnt_nd;
+	switch (d)
+	{
+	case Dir::up:
+		return current->up;
+	case Dir::down:
+		return current->down;
+	case Dir::left:
+		return current->left;
+	case Dir::right:
+		return current->right;
+	}
 }
 
-void Cursore::Set(bool mode, const size_t& size)
+void Cursore::Move(Dir d)
+{
+	switch (d)
+	{
+	case Dir::up:
+		current = current->up;
+		return;
+	case Dir::down:
+		current = current->down;
+		return;
+	case Dir::left:
+		current = current->left;
+		return;
+	case Dir::right:
+		current = current->right;
+		return;
+	}
+}
+
+void Cursore::MakeInvisible()
 {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO structCursoreInfo;
-	structCursoreInfo.bVisible = mode;
-	structCursoreInfo.dwSize = size;
+	structCursoreInfo.bVisible = false;
 	SetConsoleCursorInfo(hStdOut, &structCursoreInfo);
 }
 
@@ -132,35 +168,37 @@ void Application::SwitchLayout(Layout* lt)
 {
 	delete crnt_lt;
 	crnt_lt = lt;
+	crsr.SetNode(lt->GetStartNode());
 }
 
 void Application::ExecHandler()
 {
+	crsr.MakeInvisible();
 	while (true)
 	{
 		if (not crnt_lt->IsRendered()) crnt_lt->Render();
 
-		if ((GetKeyState(VK_UP)) and (crsr.GetNode()->up))
+		if ((GetAsyncKeyState(VK_UP)) and (crsr.IsBtnExist(Cursore::Dir::up)))
 		{
 			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->up);
 		}
-		else if ((GetKeyState(VK_DOWN)) and (crsr.GetNode()->down))
+		else if ((GetAsyncKeyState(VK_DOWN)) and (crsr.IsBtnExist(Cursore::Dir::down)))
 		{
 			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->down);
 		}
-		else if ((GetKeyState(VK_LEFT)) and (crsr.GetNode()->left))
+		else if ((GetAsyncKeyState(VK_LEFT)) and (crsr.IsBtnExist(Cursore::Dir::left)))
 		{
 			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->left);
 		}
-		else if ((GetKeyState(VK_RIGHT)) and (crsr.GetNode()->right))
+		else if ((GetAsyncKeyState(VK_RIGHT)) and (crsr.IsBtnExist(Cursore::Dir::right)))
 		{
 			crsr.GetNode()->btn->ReturnDfltColor();
 			crsr.SetNode(crsr.GetNode()->right);
 		}
-		else if (GetKeyState(VK_RETURN)) // enter
+		else if (GetAsyncKeyState(VK_RETURN)) // enter
 		{
 			crsr.GetNode()->btn->Click(&crsr);
 		}
