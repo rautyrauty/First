@@ -21,15 +21,15 @@
     <ClCompile Include="sudoku.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="tools.cpp">
+    <ClCompile Include="tools-gui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sudoku.h">
+    <ClInclude Include="sudoku-gui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="tools.h">
+    <ClInclude Include="tools-gui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

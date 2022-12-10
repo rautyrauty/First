@@ -129,11 +129,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sudoku.cpp" />
-    <ClCompile Include="tools.cpp" />
+    <ClCompile Include="tools-gui.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tools.h" />
-    <ClInclude Include="sudoku.h" />
+    <ClInclude Include="tools-gui.h" />
+    <ClInclude Include="sudoku-gui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
