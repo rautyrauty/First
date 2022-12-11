@@ -3,7 +3,7 @@
 
 // default options
 uint8_t SdkSizeOptionBtn::size = 9;
-uint8_t OpenSlotsOptionBtn::open_slots_count = 80;
+uint8_t OpenSlotsOptionBtn::open_slots_count = 50;
 
 bool DevModeBtn::dev = false;
 
@@ -540,9 +540,11 @@ void Sudoku::GetSolution()
 	{
 		for (uint8_t line = 0; line < size; )
 		{
+
 			if (table[row][line]->IsLocked())
 			{
 				sdk[row][line]->SetDigit(table[row][line]->GetDigit());
+				line += 1;
 				continue;
 			}
 			for (uint8_t tl = 0; tl < line; tl += 1)
@@ -553,6 +555,20 @@ void Sudoku::GetSolution()
 			{
 				sdk[row][line]->RemoveFD(sdk[tr][line]->GetDigit());
 			}
+			for (uint8_t tl = line+1; tl < size; tl += 1)
+			{
+				if (table[row][tl]->IsLocked())
+				{
+					sdk[row][line]->RemoveFD(table[row][tl]->GetDigit());
+				}
+			}
+			for (uint8_t tr = row+1; tr < size; tr += 1)
+			{
+				if (table[tr][line]->IsLocked())
+				{
+					sdk[row][line]->RemoveFD(table[tr][line]->GetDigit());
+				}
+			}
 
 			if (not sdk[row][line]->GenerateDigit())
 			{
@@ -561,18 +577,20 @@ void Sudoku::GetSolution()
 				if (line == 0)
 				{
 					row -= 1;
-					line = 9;
+					line = size -1;
 				}
 				else line -= 1;
 
 				while (table[row][line]->IsLocked())
 				{
+
 					if (line == 0)
 					{
 						row -= 1;
-						line = 9;
+						line = size - 1;
 					}
 					else line -= 1;
+
 				}
 
 				continue;
@@ -582,14 +600,14 @@ void Sudoku::GetSolution()
 		row += 1;
 	}
 
-	for (uint8_t row = 0; row < size; row += 1)
-	{
-		for (uint8_t line = 0; line < size; line += 1)
+		for (uint8_t row = 0; row < size; row += 1)
 		{
-			table[row][line]->SetDigit(sdk[row][line]->GetDigit());
-			delete sdk[row][line];
+			for (uint8_t line = 0; line < size; line += 1)
+			{
+				table[row][line]->SetDigit(sdk[row][line]->GetDigit());
+				delete sdk[row][line];
+			}
 		}
-	}
 	for (uint8_t i = 0; i < size; i += 1) delete[] sdk[i];
 	delete[] sdk;
 
