@@ -4,7 +4,9 @@
 #include <conio.h>
 #include <Windows.h>
 
-// “ип, позвол¤ющий рисовать на экране надпись
+#define FOREGROUND_WHITE 7
+
+// Тип, позволяющий рисовать на экране надпись
 class Label
 {
 protected:
@@ -14,7 +16,8 @@ protected:
 	WORD color;
 public:
 
-	Label(const char* string, short x, short y, WORD color = 7);
+	Label(const char* string, short x, short y, WORD color = FOREGROUND_WHITE);
+	Label(const uint8_t& digit, short x, short y, WORD color = FOREGROUND_WHITE);
 	~Label();
 
 
@@ -48,15 +51,16 @@ struct BtnNode
 class Button : public Label
 {
 protected:
-	const WORD dflt_color;
+	WORD dflt_color;
 
 	BtnNode nd;
 public:
-	Button(const char* string, short x, short y, WORD color = 7);
+	Button(const char* string, short x, short y, WORD color = FOREGROUND_WHITE);
+	Button(const uint8_t& digit, short x, short y, WORD color = FOREGROUND_WHITE);
 
 	static void Connect(Button& first, Button& second, ConType ct);
 
-	void SetDfltColor();
+	void SetDfltColor(WORD new_color);
 	WORD GetDfltColor() const;
 
 

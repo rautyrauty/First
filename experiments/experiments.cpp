@@ -101,10 +101,54 @@ void PrintSudoku(cell sdk[9][9])
 	}
 }
 
+
+
 int main()
 {
-	cell sdk[9][9];
+	/*cell sdk[9][9];
 	GenerateSudoku(sdk);
-	PrintSudoku(sdk);
+	PrintSudoku(sdk);*/
+	//srand(time(0));
+	//bool* opened = new bool[9 * 9];
+	//for (uint8_t i = 0; i < 9 * 9; i += 1)
+	//{
+	//	opened[i] = false;
+	//}
+
+	//for (uint8_t i = 0; i < 20; i += 1)
+	//{
+	//	uint8_t tmp = rand() % (9 * 9 - i);
+	//	uint8_t true_num = 0;
+	//	while (true)
+	//	{
+	//		if (not opened[true_num]) // здесь вс ругается, но он дбл
+	//		{
+	//			if (tmp == 0)
+	//			{
+	//				break;
+	//			}
+	//			tmp -= 1;
+	//		}
+	//		true_num += 1;
+	//	}
+	//	opened[true_num] = true;
+	//}
+	//int counter = 0;
+	//for (int i = 0; i < 81; i += 1)
+	//{
+	//	cout << i << ' ' << opened[i] << '\n';
+	//	if (opened[i]) counter += 1;
+	//}
+	//cout << counter << " Hello" << '\n';
+
+	for (uint8_t line = 0; line < 120; line += 1)
+	{
+		cout << line % 10;
+	}
+	cout << '\n';
+	for (int line = 1; line < 100; line += 1)
+	{
+		cout << line << '\n';
+	}
 	return 0;
 }

@@ -11,6 +11,7 @@ class OpenSlotsOptionBtn : public Button
 {
 	static uint8_t open_slots_count;
 public:
+
 	static uint8_t GetCount();
 
 	OpenSlotsOptionBtn(short x, short y);
@@ -21,7 +22,9 @@ public:
 class SdkSizeOptionBtn : public Button
 {
 	static uint8_t size;
+
 public:
+
 	static uint8_t GetSize();
 
 	SdkSizeOptionBtn(short x, short y);
@@ -101,9 +104,11 @@ public:
 
 class DevModeBtn : public Button
 {
-	Sudoku* sdk;
+	static bool dev;
 public:
-	DevModeBtn(Sudoku* sdk, short x, short y);
+	DevModeBtn(short x, short y);
+
+	static bool GiveDevStatus();
 
 	void Click(Cursore* crsr) override;
 };
@@ -115,6 +120,7 @@ protected:
 	bool is_locked;
 public:
 	SdkBtn(short x, short y);
+	SdkBtn(uint8_t d,short x, short y);
 
 	void LockUp();
 	void SetDigit(const uint8_t& d);
@@ -126,23 +132,24 @@ public:
 
 class Sudoku : public Layout
 {
-	SdkBtn*** table; // 81 size
+	SdkBtn*** table;
+
 	CreateMenuBtn rtrn;
 	CheckBtn check;
 	DevModeBtn dev;
+	GetSolutionBtn gs;
 
 	uint8_t size;
 	bool dev_mode;
 
 	Label console;
 public:
-	Sudoku(uint8_t open_slots_count, uint8_t size);
+	Sudoku(uint8_t open_slots_count,const uint8_t& size);
 
 	void Render() const override;
 	BtnNode* GetStartNode() override;
 	bool IsDevMode() const;
 
-	void SwitchDevMode();
 	void Check();
 	void GetSolution();
 };

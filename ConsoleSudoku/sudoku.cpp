@@ -1,25 +1,33 @@
 #include "sudoku-gui.h"
 
 
+// default options
+uint8_t SdkSizeOptionBtn::size = 9;
+uint8_t OpenSlotsOptionBtn::open_slots_count = 80;
+
+bool DevModeBtn::dev = false;
+
+
 uint8_t OpenSlotsOptionBtn::GetCount()
 {
 	return open_slots_count;
 }
+
 OpenSlotsOptionBtn::OpenSlotsOptionBtn(short x, short y) 
 	: 
-	Button("20", x, y)
+	Button(open_slots_count, x, y)
 {
 }
 
 void OpenSlotsOptionBtn::Click(Cursore* crsr)
 {
 	open_slots_count += 1;
-	if (open_slots_count > 81) open_slots_count = 0;
+	if (open_slots_count > SdkSizeOptionBtn::GetSize()* SdkSizeOptionBtn::GetSize()) open_slots_count = 0;
 
 	char new_text[3];
 	if (open_slots_count < 10)
 	{
-		new_text[0] = char((open_slots_count % 10) + 48);
+		new_text[0] = char(open_slots_count + 48);
 		new_text[1] = '\0';
 	}
 	else
@@ -38,7 +46,7 @@ uint8_t SdkSizeOptionBtn::GetSize()
 
 SdkSizeOptionBtn::SdkSizeOptionBtn(short x, short y)
 	:
-	Button("9", x, y)
+	Button(size, x, y)
 {
 }
 
@@ -48,7 +56,7 @@ void SdkSizeOptionBtn::Click(Cursore* crsr)
 	if (size > 9) size = 2;
 
 	char new_text[2];
-	new_text[0] = size;
+	new_text[0] = char(size + 48);
 	new_text[1] = '\0';
 	SetText(new_text);
 }
@@ -94,6 +102,7 @@ Menu::Menu()
 
 void Menu::Render() const
 {
+	system("CLS");
 	play.Render();
 	os.Render();
 	ex.Render();
@@ -122,6 +131,7 @@ SdkAppl::SdkAppl()
 	adress = this;
 	crnt_lt = CreateStartLayout();
 	crsr.SetNode(crnt_lt->GetStartNode());
+	srand(time(0));
 }
 
 //sdk
@@ -139,7 +149,7 @@ void CreateMenuBtn::Click(Cursore* crsr)
 
 CheckBtn::CheckBtn(Sudoku* sdk, short x, short y) 
 	: 
-	Button("Check", x, y, NULL)
+	Button("Check", x, y)
 {
 	this->sdk = sdk;
 }
@@ -151,7 +161,7 @@ void CheckBtn::Click(Cursore* crsr)
 
 GetSolutionBtn::GetSolutionBtn(Sudoku* sdk, short x, short y)
 	:
-	Button("Get Solution", x, y, FOREGROUND_BLUE)
+	Button("Get Solution", x, y, NULL)
 {
 	this->sdk = sdk;
 }
@@ -161,16 +171,20 @@ void GetSolutionBtn::Click(Cursore* crsr)
 	sdk->GetSolution();
 }
 
-DevModeBtn::DevModeBtn(Sudoku* sdk, short x, short y)
+DevModeBtn::DevModeBtn(short x, short y)
 	:
-	Button("Developer Mode", x, y, FOREGROUND_BLUE)
+	Button("Dev Mode", x, y, FOREGROUND_BLUE)
 {
-	this->sdk = sdk;
 }
 
 void DevModeBtn::Click(Cursore* crsr)
 {
-	sdk->SwitchDevMode();
+	dev = !dev;
+}
+
+bool DevModeBtn::GiveDevStatus()
+{
+	return dev;
 }
 
 SdkBtn::SdkBtn(short x, short y)
@@ -181,13 +195,22 @@ SdkBtn::SdkBtn(short x, short y)
 	digit = 0;
 }
 
+SdkBtn::SdkBtn(uint8_t d, short x, short y)
+	:
+	Button(d, x, y, FOREGROUND_RED)
+{
+	is_locked = true;
+	digit = d;
+}
+
 
 void SdkBtn::LockUp()
 {
 	is_locked = !is_locked;
-	if (is_locked) SetColor(FOREGROUND_RED);
-	else SetColor(FOREGROUND_GREEN);
+	if (is_locked) SetDfltColor(FOREGROUND_RED);
+	else SetDfltColor(FOREGROUND_GREEN);
 	Render();
+	Sleep(100);
 }
 
 void SdkBtn::SetDigit(const uint8_t& d)
@@ -195,9 +218,8 @@ void SdkBtn::SetDigit(const uint8_t& d)
 	digit = d;
 	char new_text[2];
 	new_text[0] = char(d + 48);
-	new_text[1] = '\n';
+	new_text[1] = '\0';
 	SetText(new_text);
-	Render();
 }
 
 uint8_t SdkBtn::GetDigit() const
@@ -212,25 +234,28 @@ bool SdkBtn::IsLocked() const
 
 void SdkBtn::Click(Cursore* crsr)
 {
-	if (is_locked) MessageBeep(0);
-	else
+	if (not DevModeBtn::GiveDevStatus())
 	{
-		if (digit + 1 >= 10) SetDigit(0);
-		else (SetDigit(digit + 1));
+		if (is_locked) MessageBeep(0);
+		else
+		{
+			if (digit + 1 >= 10) SetDigit(0);
+			else (SetDigit(digit + 1));
+		}
 	}
+	else LockUp();
 }
 
 // Далее буду определять класс который нужен только для того, чтобы создавать и решать судоку
 
 class cell
 {
-	bool* free_digits; //
+	bool* free_digits;
 	uint8_t size;
 	uint8_t digit; // 0 - нет числа
 public:
 	cell(const uint8_t& size, const uint8_t digit = NULL)
 	{
-		srand(time(0));
 		this->size = size;
 		this->digit = digit;
 		free_digits = new bool[size];
@@ -282,16 +307,24 @@ public:
 		fd_count -= 1;
 		return true;
 	}
+
+	void SetDigit(uint8_t d)
+	{
+		digit = d;
+	}
 };
 
-Sudoku::Sudoku(uint8_t open_slots_count, uint8_t size) 
+Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size) 
 	: 
-	rtrn{0,18}, 
-	check{this,0,19}, 
-	dev{this,0,20}, 
-	console{"Console", 20,20},
-	dev_mode{false}
+	rtrn{40,25}, 
+	check{this,58,25}, 
+	dev{75,25}, 
+	console{"Console", 60 - size * 2 + size % 2 * 2,28},
+	dev_mode{false},
+	gs{this,0,25}
 {
+	open_slots_count %= (size*size + 1);
+	system("CLS");
 	this->size = size;
 	cell*** sdk = new cell**[size];
 	for (uint8_t i = 0; i < size; i += 1) sdk[i] = new cell*[size] ;
@@ -332,27 +365,79 @@ Sudoku::Sudoku(uint8_t open_slots_count, uint8_t size)
 		row += 1;
 	}
 
+	bool* opened = new bool[size * size];
+	for (uint8_t i = 0; i < size * size; i += 1)
+	{
+		opened[i] = false;
+	}
+
+	for (uint8_t i = 0; i < open_slots_count; i += 1)
+	{
+		uint8_t tmp = rand() % (size * size - i);
+		uint8_t true_num = 0;
+		while (true)
+		{
+			if (not opened[true_num]) // здесь вс ругается, но он дбл
+				// или я дбл
+			{
+				if (tmp == 0)
+				{
+					break;
+				}
+				tmp -= 1;
+			}
+			true_num += 1;
+		}
+		opened[true_num] = true;
+	}
+
 	table = new SdkBtn **[size];
 	for (uint8_t i = 0; i < size; i += 1) table[i] = new SdkBtn * [size];
+
 	for (uint8_t line = 0; line < size; line += 1)
 	{
 		for (uint8_t row = 0; row < size; row += 1)
 		{
-			table[row][line] = new SdkBtn{ row * 2,line * 2 };
-			table[row][line]->SetDigit(sdk[row][line]->GetDigit());
+			
+			bool t = true;
+			for (uint8_t i = 0; i < open_slots_count; i += 1)
+			{
+				if (opened[row + (line * size)])
+				{
+					table[row][line] = new SdkBtn{ sdk[row][line]->GetDigit(), 60 - size*2 + size%2*2  + row * 4, 15 - size - size/2 + line * 2 };
+					t = false;
+					break;
+				}
+			}
+			if (t) table[row][line] = new SdkBtn{ 60 - size*2 + size % 2 * 2 + row * 4, 15 - size - size / 2 + line * 2 };
 		}
 	}
+	delete[] opened;
 
+	Button::Connect(gs, rtrn, ConType::LeftRight);
 
-	for (uint8_t i = 0; i < size; i += 1)
+	Button::Connect(rtrn, check, ConType::LeftRight);
+
+	Button::Connect(check, dev, ConType::LeftRight);
+
+	for (uint8_t row = 0; row < size; row += 1)
 	{
-		for (uint8_t j = 0; j < size; j += 1)
+		for (uint8_t line = 0; line < size; line += 1)
 		{
-			delete sdk[i][j];
+			if (row+1 < size)Button::Connect(*table[row][line], *table[row + 1][line], ConType::LeftRight);
+			if (line + 1 < size)Button::Connect(*table[row][line], *table[row][line+1], ConType::UpDown);
+
+			delete sdk[row][line];
 		}
 	}
 	for (uint8_t i = 0; i < size; i += 1) delete[] sdk[i];
 	delete[] sdk;
+
+	for (uint8_t row = 0; row < size; row += 1)
+	{
+		Button::Connect(*table[row][size-1], check, ConType::UpDown);
+	}
+	Button::Connect(*table[size/2][size - 1], check, ConType::UpDown);
 }
 
 void Sudoku::Render() const
@@ -365,9 +450,9 @@ void Sudoku::Render() const
 		}
 	}
 	rtrn.Render();
-	check.Render();
 	dev.Render();
 	console.Render();
+	check.Render();
 }
 
 BtnNode* Sudoku::GetStartNode()
@@ -380,17 +465,132 @@ bool Sudoku::IsDevMode() const
 	return dev_mode;
 }
 
-void Sudoku::SwitchDevMode()
-{
-	dev_mode = !dev_mode;
-}
-
 void Sudoku::Check()
 {
-	MessageBeep(0);
+	bool** lines = new bool*[size];
+	bool** rows = new bool*[size];
+	for (uint8_t i = 0; i < size; i+=1)
+	{
+		lines[i] = new bool[size];
+		rows[i] = new bool[size];
+		for (uint8_t j = 0; j < size; j += 1)
+		{
+			lines[i][j] = true;
+			rows[i][j] = true;
+		}
+	}
+
+	bool flag = true;
+	for (uint8_t line = 0; (line < size) and flag; line += 1)
+	{
+		for (uint8_t row = 0; (row < size) and flag; row += 1)
+		{
+			if (table[row][line]->GetDigit() == 0)
+			{
+				char new_text[]{ "Console: In pos _,_ u have void cell" };
+				new_text[16] = char(row + 1 + 48);
+				new_text[18] = char(line + 1 + 48);
+				console.SetText(new_text);
+				MessageBeep(0);
+				flag = false;
+			}
+			else
+			if ((lines[line][table[row][line]->GetDigit()-1]) and (rows[row][table[row][line]->GetDigit()-1]))
+			{
+				lines[line][table[row][line]->GetDigit() - 1] = false;
+				rows[row][table[row][line]->GetDigit() - 1] = false;
+			}
+			else
+			{
+				char new_text[]{ "Console: In pos _,_ u have wrong" };
+				new_text[16] = char(row + 1 + 48);
+				new_text[18] = char(line + 1 + 48);
+				console.SetText(new_text);
+				MessageBeep(0);
+				flag = false;
+			}
+		}
+	}
+	if (flag) console.SetText("Console: U WIN!!! GOOOD JOB MAN UR THE BEST!!!!");
+
+	for (uint8_t i = 0; i < size; i += 1)
+	{
+		delete[] lines[i];
+		delete[] rows[i];
+	}
+	delete[] lines;
+	delete[] rows;
 }
 
 void Sudoku::GetSolution()
 {
-	MessageBeep(0);
+	gs.SetText("u dirty cheater /(0\\_/0)\\");
+
+	cell*** sdk = new cell * *[size];
+	for (uint8_t i = 0; i < size; i += 1) sdk[i] = new cell * [size];
+	for (uint8_t i = 0; i < size; i += 1)
+	{
+		for (uint8_t j = 0; j < size; j += 1)
+		{
+			sdk[i][j] = new cell{ size };
+		}
+	}
+
+	for (uint8_t row = 0; row < size; )
+	{
+		for (uint8_t line = 0; line < size; )
+		{
+			if (table[row][line]->IsLocked())
+			{
+				sdk[row][line]->SetDigit(table[row][line]->GetDigit());
+				continue;
+			}
+			for (uint8_t tl = 0; tl < line; tl += 1)
+			{
+				sdk[row][line]->RemoveFD(sdk[row][tl]->GetDigit());
+			}
+			for (uint8_t tr = 0; tr < row; tr += 1)
+			{
+				sdk[row][line]->RemoveFD(sdk[tr][line]->GetDigit());
+			}
+
+			if (not sdk[row][line]->GenerateDigit())
+			{
+				sdk[row][line]->Reset();
+
+				if (line == 0)
+				{
+					row -= 1;
+					line = 9;
+				}
+				else line -= 1;
+
+				while (table[row][line]->IsLocked())
+				{
+					if (line == 0)
+					{
+						row -= 1;
+						line = 9;
+					}
+					else line -= 1;
+				}
+
+				continue;
+			}
+			line += 1;
+		}
+		row += 1;
+	}
+
+	for (uint8_t row = 0; row < size; row += 1)
+	{
+		for (uint8_t line = 0; line < size; line += 1)
+		{
+			table[row][line]->SetDigit(sdk[row][line]->GetDigit());
+			delete sdk[row][line];
+		}
+	}
+	for (uint8_t i = 0; i < size; i += 1) delete[] sdk[i];
+	delete[] sdk;
+
 }

@@ -1,11 +1,35 @@
 #include "tools-gui.h"
 
+Application* Application::adress = nullptr;
+
 Label::Label(const char* string, short x, short y, WORD color)
 {
 	text = nullptr;
 	this->x = x;
 	this->y = y;
 	SetText(string);
+	SetColor(color);
+}
+
+Label::Label(const uint8_t& digit, short x, short y, WORD color)
+{
+	this->x = x;
+	this->y = y;
+
+	char* new_text = new char[3];
+	if (digit < 10)
+	{
+		new_text[0] = char(digit + 48);
+		new_text[1] = '\0';
+	}
+	else
+	{
+		new_text[0] = char((digit / 10 % 10) + 48);
+		new_text[1] = char((digit % 10) + 48);
+	}
+	new_text[2] = '\0';
+	text = new_text;
+
 	SetColor(color);
 }
 
@@ -63,6 +87,14 @@ Button::Button(const char* string, short x, short y, WORD color)
 	nd.btn = this;
 }
 
+Button::Button(const uint8_t& digit, short x, short y, WORD color)
+	:
+	Label(digit, x, y, color),
+	dflt_color{ color }
+{
+	nd.btn = this;
+}
+
 void Button::Connect(Button& first, Button& second, ConType ct)
 {
 	switch (ct)
@@ -78,10 +110,9 @@ void Button::Connect(Button& first, Button& second, ConType ct)
 	}
 }
 
-void Button::SetDfltColor()
+void Button::SetDfltColor(WORD new_color)
 {
-	SetColor(dflt_color);
-	Render();
+	dflt_color = new_color;
 }
 
 WORD Button::GetDfltColor() const
@@ -123,7 +154,7 @@ bool Cursore::IsBtnExist(Dir d) const
 
 void Cursore::Move(Dir d)
 {
-	current->btn->SetDfltColor();
+	current->btn->SetColor(current->btn->GetDfltColor());
 	blink_countdown = 0;
 	blink_lever = false;
 	switch (d)
@@ -153,10 +184,10 @@ void Cursore::Blink()
 	Sleep(100);
 	if (blink_countdown % 5 == 0)
 	{
-		if (blink_lever) current->btn->SetDfltColor();
+		if (blink_lever) current->btn->SetColor(current->btn->GetDfltColor());
 		else
 		{
-			current->btn->SetColor(current->btn->GetDfltColor() | FOREGROUND_INTENSITY);
+			current->btn->SetColor(current->btn->GetDfltColor() | FOREGROUND_INTENSITY | BACKGROUND_BLUE);
 		}
 		blink_lever = !blink_lever;
 		current->btn->Render();
@@ -183,7 +214,6 @@ void Application::SwitchLayout(Layout* lt)
 	delete crnt_lt;
 	crnt_lt = lt;
 	crsr.SetNode(lt->GetStartNode());
-	system("CLS");
 	crnt_lt->Render();
 }
 
@@ -193,6 +223,7 @@ void Application::ExecHandler()
 	crsr.MakeInvisible();
 	while (true)
 	{
+		crsr.Blink();
 		if ((GetAsyncKeyState(VK_UP)) and (crsr.IsBtnExist(Cursore::Dir::up)))
 		{
 			crsr.Move(Cursore::Dir::up);
@@ -213,7 +244,5 @@ void Application::ExecHandler()
 		{
 			crsr.Click();
 		}
-
-		crsr.Blink();
 	}
 }
