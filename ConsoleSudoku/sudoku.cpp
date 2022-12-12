@@ -239,7 +239,7 @@ void SdkBtn::Click(Cursore* crsr)
 		if (is_locked) MessageBeep(0);
 		else
 		{
-			if (digit + 1 >= 10) SetDigit(0);
+			if (digit + 1 > SdkSizeOptionBtn::GetSize()) SetDigit(0);
 			else (SetDigit(digit + 1));
 		}
 	}
