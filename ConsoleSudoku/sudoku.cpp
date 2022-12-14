@@ -2,8 +2,7 @@
 
 
 // default options
-uint8_t SdkSizeOptionBtn::size = 9;
-uint8_t OpenSlotsOptionBtn::open_slots_count = 50;
+uint8_t OpenSlotsOptionBtn::open_slots_count = 81;
 
 bool DevModeBtn::dev = false;
 
@@ -22,7 +21,7 @@ OpenSlotsOptionBtn::OpenSlotsOptionBtn(short x, short y)
 void OpenSlotsOptionBtn::Click(Cursore* crsr)
 {
 	open_slots_count += 1;
-	if (open_slots_count > SdkSizeOptionBtn::GetSize()* SdkSizeOptionBtn::GetSize()) open_slots_count = 0;
+	if (open_slots_count > 81) open_slots_count = 0;
 
 	char new_text[3];
 	if (open_slots_count < 10)
@@ -39,31 +38,6 @@ void OpenSlotsOptionBtn::Click(Cursore* crsr)
 	SetText(new_text);
 }
 
-uint8_t SdkSizeOptionBtn::GetSize()
-{
-	return size;
-}
-
-SdkSizeOptionBtn::SdkSizeOptionBtn(short x, short y)
-	:
-	Button(size, x, y)
-{
-}
-
-void SdkSizeOptionBtn::Click(Cursore* crsr)
-{
-	size += 1;
-	if (size > 9) size = 2;
-
-	char new_text[2];
-	new_text[0] = char(size + 48);
-	new_text[1] = '\0';
-	SetText(new_text);
-}
-
-
-
-
 CreateSudokuBtn::CreateSudokuBtn(short x, short y)
 	: 
 	Button("Play!", x, y, FOREGROUND_GREEN)
@@ -71,7 +45,7 @@ CreateSudokuBtn::CreateSudokuBtn(short x, short y)
 
 void CreateSudokuBtn::Click(Cursore* crsr)
 {
-	Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount(), SdkSizeOptionBtn::GetSize()));
+	Application::GetAdress()->SwitchLayout(new Sudoku(OpenSlotsOptionBtn::GetCount()));
 	//MessageBeep(0);
 }
 
@@ -90,14 +64,10 @@ Menu::Menu()
 	play{ 40,12 },
 	ex{ 40,14 },
 	os{ 77, 12 },
-	about_open_slots{ "Count open slots setting: " ,50,12 },
-	sdk_size{ 77,14 },
-	about_sdk_size{ "Sudoku size setting: ", 50,14 }
+	about_open_slots{ "Count open slots setting: " ,50,12 }
 {
 	Button::Connect(play, os, ConType::LeftRight);
 	Button::Connect(play, ex, ConType::UpDown);
-	Button::Connect(ex, sdk_size, ConType::LeftRight);
-	Button::Connect(os, sdk_size, ConType::UpDown);
 }
 
 void Menu::Render() const
@@ -107,8 +77,6 @@ void Menu::Render() const
 	os.Render();
 	ex.Render();
 	about_open_slots.Render();
-	sdk_size.Render();
-	about_sdk_size.Render();
 }
 
 BtnNode* Menu::GetStartNode()
@@ -239,7 +207,7 @@ void SdkBtn::Click(Cursore* crsr)
 		if (is_locked) MessageBeep(0);
 		else
 		{
-			if (digit + 1 > SdkSizeOptionBtn::GetSize()) SetDigit(0);
+			if (digit + 1 > 9) SetDigit(0);
 			else (SetDigit(digit + 1));
 		}
 	}
@@ -314,31 +282,30 @@ public:
 	}
 };
 
-Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size) 
+Sudoku::Sudoku(uint8_t open_slots_count) 
 	: 
 	rtrn{40,25}, 
 	check{this,58,25}, 
 	dev{75,25}, 
-	console{"Console", 60 - size * 2 + size % 2 * 2,28},
+	console{"Console", 40,28},
 	dev_mode{false},
 	gs{this,0,25}
 {
-	open_slots_count %= (size*size + 1);
+	open_slots_count %= (9*9 + 1);
 	system("CLS");
-	this->size = size;
-	cell*** sdk = new cell**[size];
-	for (uint8_t i = 0; i < size; i += 1) sdk[i] = new cell*[size] ;
-	for (uint8_t i = 0; i < size; i += 1)
+	cell*** sdk = new cell**[9];
+	for (uint8_t i = 0; i < 9; i += 1) sdk[i] = new cell*[9] ;
+	for (uint8_t i = 0; i < 9; i += 1)
 	{
-		for (uint8_t j = 0; j < size; j += 1)
+		for (uint8_t j = 0; j < 9; j += 1)
 		{
-			sdk[i][j] = new cell{ size };
+			sdk[i][j] = new cell{ 9 };
 		}
 	}
 
-	for (uint8_t row = 0; row < size; )
+	for (uint8_t row = 0; row < 9; )
 	{
-		for (uint8_t line = 0; line < size; )
+		for (uint8_t line = 0; line < 9; )
 		{
 			for (uint8_t tl = 0; tl < line; tl += 1)
 			{
@@ -349,15 +316,40 @@ Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size)
 				sdk[row][line]->RemoveFD(sdk[tr][line]->GetDigit());
 			}
 
+			for (uint8_t tr = (row / 3) * 3; tr < row; tr += 1)
+			{
+				for (uint8_t tl = (line / 3) * 3; tl < line; tl += 1)
+				{
+					sdk[row][line]->RemoveFD(sdk[tr][tl]->GetDigit());
+				}
+			}
+			
+			{
+				int8_t tr = row / 3 * 3;
+				int8_t tl = line / 3 * 3;
+				while ((tr != row) or (tl != line))
+				{
+					sdk[row][line]->RemoveFD(sdk[tr][tl]->GetDigit());
+					tl += 1;
+					if (tl >= line / 3 * 3 + 3)
+					{
+						tr += 1;
+						tl = line / 3 * 3;
+					}
+				}
+			}
+
+
 			if (not sdk[row][line]->GenerateDigit())
 			{
 				sdk[row][line]->Reset();
 				if (line == 0)
 				{
 					row -= 1;
-					line = 9;
+					line = 8;
 				}
 				else line -= 1;
+
 				continue;
 			}
 			line += 1;
@@ -365,15 +357,15 @@ Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size)
 		row += 1;
 	}
 
-	bool* opened = new bool[size * size];
-	for (uint8_t i = 0; i < size * size; i += 1)
+	bool* opened = new bool[9 * 9];
+	for (uint8_t i = 0; i < 9 * 9; i += 1)
 	{
 		opened[i] = false;
 	}
 
 	for (uint8_t i = 0; i < open_slots_count; i += 1)
 	{
-		uint8_t tmp = rand() % (size * size - i);
+		uint8_t tmp = rand() % (9 * 9 - i);
 		uint8_t true_num = 0;
 		while (true)
 		{
@@ -391,25 +383,25 @@ Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size)
 		opened[true_num] = true;
 	}
 
-	table = new SdkBtn **[size];
-	for (uint8_t i = 0; i < size; i += 1) table[i] = new SdkBtn * [size];
+	table = new SdkBtn **[9];
+	for (uint8_t i = 0; i < 9; i += 1) table[i] = new SdkBtn * [9];
 
-	for (uint8_t line = 0; line < size; line += 1)
+	for (uint8_t line = 0; line < 9; line += 1)
 	{
-		for (uint8_t row = 0; row < size; row += 1)
+		for (uint8_t row = 0; row < 9; row += 1)
 		{
 			
 			bool t = true;
 			for (uint8_t i = 0; i < open_slots_count; i += 1)
 			{
-				if (opened[row + (line * size)])
+				if (opened[row + (line * 9)])
 				{
-					table[row][line] = new SdkBtn{ sdk[row][line]->GetDigit(), 60 - size*2 + size%2*2  + row * 4, 15 - size - size/2 + line * 2 };
+					table[row][line] = new SdkBtn{ sdk[row][line]->GetDigit(), 46 + row * 4, 3 + line * 2 };
 					t = false;
 					break;
 				}
 			}
-			if (t) table[row][line] = new SdkBtn{ 60 - size*2 + size % 2 * 2 + row * 4, 15 - size - size / 2 + line * 2 };
+			if (t) table[row][line] = new SdkBtn{ 46 + row * 4, 3 + line * 2 };
 		}
 	}
 	delete[] opened;
@@ -420,34 +412,58 @@ Sudoku::Sudoku(uint8_t open_slots_count, const uint8_t& size)
 
 	Button::Connect(check, dev, ConType::LeftRight);
 
-	for (uint8_t row = 0; row < size; row += 1)
+	for (uint8_t row = 0; row < 9; row += 1)
 	{
-		for (uint8_t line = 0; line < size; line += 1)
+		for (uint8_t line = 0; line < 9; line += 1)
 		{
-			if (row+1 < size)Button::Connect(*table[row][line], *table[row + 1][line], ConType::LeftRight);
-			if (line + 1 < size)Button::Connect(*table[row][line], *table[row][line+1], ConType::UpDown);
+			if (row+1 < 9)Button::Connect(*table[row][line], *table[row + 1][line], ConType::LeftRight);
+			if (line + 1 < 9)Button::Connect(*table[row][line], *table[row][line+1], ConType::UpDown);
 
 			delete sdk[row][line];
 		}
 	}
-	for (uint8_t i = 0; i < size; i += 1) delete[] sdk[i];
+	for (uint8_t i = 0; i < 9; i += 1) delete[] sdk[i];
 	delete[] sdk;
 
-	for (uint8_t row = 0; row < size; row += 1)
+	for (uint8_t row = 0; row < 9; row += 1)
 	{
-		Button::Connect(*table[row][size-1], check, ConType::UpDown);
+		Button::Connect(*table[row][9-1], check, ConType::UpDown);
 	}
-	Button::Connect(*table[size/2][size - 1], check, ConType::UpDown);
+	Button::Connect(*table[9/2][9 - 1], check, ConType::UpDown);
 }
 
 void Sudoku::Render() const
 {
-	for (uint8_t i = 0; i < size; i++)
+	for (uint8_t i = 0; i < 9; i++)
 	{
-		for (uint8_t j = 0; j < size; j++)
+		for (uint8_t j = 0; j < 9; j++)
 		{
 			table[i][j]->Render();
 		}
+	}
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdOut, 7);
+	for (uint8_t i = 0; i < 2; i += 1)
+	{
+		for (uint8_t l = 0; l < 17; l += 1)
+		{
+			SetConsoleCursorPosition(hStdOut, { short(56 + i*12), short(3 + l)});
+			std::cout << '|';
+		}
+		for (uint8_t l = 0; l < 33; l += 1)
+		{
+			SetConsoleCursorPosition(hStdOut, { short(46 + l), short(8 + i*6) });
+			std::cout << '-';
+		}
+	}
+
+	//SetConsoleCursorPosition(hStdOut, { short(56 + i * 12), short(8 + i * 6) });
+	for (uint8_t i = 0; i < 2; i += 1)
+	{
+		SetConsoleCursorPosition(hStdOut, { short(56), short(8 + i * 6) });
+		std::cout << '+';
+		SetConsoleCursorPosition(hStdOut, { short(56 + 12), short(8 + i * 6) });
+		std::cout << '+';
 	}
 	rtrn.Render();
 	dev.Render();
@@ -467,23 +483,28 @@ bool Sudoku::IsDevMode() const
 
 void Sudoku::Check()
 {
-	bool** lines = new bool*[size];
-	bool** rows = new bool*[size];
-	for (uint8_t i = 0; i < size; i+=1)
+	bool** lines = new bool*[9];
+	bool** rows = new bool*[9];
+	bool** squares = new bool* [9];
+	for (uint8_t i = 0; i < 9; i+=1)
 	{
-		lines[i] = new bool[size];
-		rows[i] = new bool[size];
-		for (uint8_t j = 0; j < size; j += 1)
+		lines[i] = new bool[9];
+		rows[i] = new bool[9];
+		squares[i] = new bool[9];
+		for (uint8_t j = 0; j < 9; j += 1)
 		{
 			lines[i][j] = true;
 			rows[i][j] = true;
+			squares[i][j] = true;
 		}
 	}
 
+
+
 	bool flag = true;
-	for (uint8_t line = 0; (line < size) and flag; line += 1)
+	for (uint8_t line = 0; (line < 9) and flag; line += 1)
 	{
-		for (uint8_t row = 0; (row < size) and flag; row += 1)
+		for (uint8_t row = 0; (row < 9) and flag; row += 1)
 		{
 			if (table[row][line]->GetDigit() == 0)
 			{
@@ -495,10 +516,12 @@ void Sudoku::Check()
 				flag = false;
 			}
 			else
-			if ((lines[line][table[row][line]->GetDigit()-1]) and (rows[row][table[row][line]->GetDigit()-1]))
+			if ((lines[line][table[row][line]->GetDigit()-1]) and (rows[row][table[row][line]->GetDigit()-1]) 
+				and (squares[row / 3 + line / 3 * 3][table[row][line]->GetDigit() - 1]))
 			{
 				lines[line][table[row][line]->GetDigit() - 1] = false;
 				rows[row][table[row][line]->GetDigit() - 1] = false;
+				squares[row / 3 + line / 3 * 3][table[row][line]->GetDigit() - 1] = false;
 			}
 			else
 			{
@@ -513,7 +536,7 @@ void Sudoku::Check()
 	}
 	if (flag) console.SetText("Console: U WIN!!! GOOOD JOB MAN UR THE BEST!!!!");
 
-	for (uint8_t i = 0; i < size; i += 1)
+	for (uint8_t i = 0; i < 9; i += 1)
 	{
 		delete[] lines[i];
 		delete[] rows[i];
@@ -526,19 +549,19 @@ void Sudoku::GetSolution()
 {
 	gs.SetText("u dirty cheater /(0\\_/0)\\");
 
-	cell*** sdk = new cell * *[size];
-	for (uint8_t i = 0; i < size; i += 1) sdk[i] = new cell * [size];
-	for (uint8_t i = 0; i < size; i += 1)
+	cell*** sdk = new cell * *[9];
+	for (uint8_t i = 0; i < 9; i += 1) sdk[i] = new cell * [9];
+	for (uint8_t i = 0; i < 9; i += 1)
 	{
-		for (uint8_t j = 0; j < size; j += 1)
+		for (uint8_t j = 0; j < 9; j += 1)
 		{
-			sdk[i][j] = new cell{ size };
+			sdk[i][j] = new cell{ 9 };
 		}
 	}
 
-	for (uint8_t row = 0; row < size; )
+	for (uint8_t row = 0; row < 9; )
 	{
-		for (uint8_t line = 0; line < size; )
+		for (uint8_t line = 0; line < 9; )
 		{
 
 			if (table[row][line]->IsLocked())
@@ -555,18 +578,33 @@ void Sudoku::GetSolution()
 			{
 				sdk[row][line]->RemoveFD(sdk[tr][line]->GetDigit());
 			}
-			for (uint8_t tl = line+1; tl < size; tl += 1)
+			for (uint8_t tl = line+1; tl < 9; tl += 1)
 			{
 				if (table[row][tl]->IsLocked())
 				{
 					sdk[row][line]->RemoveFD(table[row][tl]->GetDigit());
 				}
 			}
-			for (uint8_t tr = row+1; tr < size; tr += 1)
+			for (uint8_t tr = row+1; tr < 9; tr += 1)
 			{
 				if (table[tr][line]->IsLocked())
 				{
 					sdk[row][line]->RemoveFD(table[tr][line]->GetDigit());
+				}
+			}
+
+			{
+				int8_t tr = row / 3 * 3;
+				int8_t tl = line / 3 * 3;
+				while ((tr != row) or (tl != line))
+				{
+					sdk[row][line]->RemoveFD(sdk[tr][tl]->GetDigit());
+					tl += 1;
+					if (tl >= line / 3 * 3 + 3)
+					{
+						tr += 1;
+						tl = line / 3 * 3;
+					}
 				}
 			}
 
@@ -577,7 +615,7 @@ void Sudoku::GetSolution()
 				if (line == 0)
 				{
 					row -= 1;
-					line = size -1;
+					line = 9 -1;
 				}
 				else line -= 1;
 
@@ -587,7 +625,7 @@ void Sudoku::GetSolution()
 					if (line == 0)
 					{
 						row -= 1;
-						line = size - 1;
+						line = 9 - 1;
 					}
 					else line -= 1;
 
@@ -600,15 +638,15 @@ void Sudoku::GetSolution()
 		row += 1;
 	}
 
-		for (uint8_t row = 0; row < size; row += 1)
+		for (uint8_t row = 0; row < 9; row += 1)
 		{
-			for (uint8_t line = 0; line < size; line += 1)
+			for (uint8_t line = 0; line < 9; line += 1)
 			{
 				table[row][line]->SetDigit(sdk[row][line]->GetDigit());
 				delete sdk[row][line];
 			}
 		}
-	for (uint8_t i = 0; i < size; i += 1) delete[] sdk[i];
+	for (uint8_t i = 0; i < 9; i += 1) delete[] sdk[i];
 	delete[] sdk;
 
 }

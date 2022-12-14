@@ -19,19 +19,6 @@ public:
 	void Click(Cursore* crsr) override;
 };
 
-class SdkSizeOptionBtn : public Button
-{
-	static uint8_t size;
-
-public:
-
-	static uint8_t GetSize();
-
-	SdkSizeOptionBtn(short x, short y);
-
-	void Click(Cursore* crsr) override;
-};
-
 class CreateSudokuBtn : public Button
 {
 public:
@@ -55,8 +42,6 @@ class Menu : public Layout
 
 	OpenSlotsOptionBtn os;
 	Label about_open_slots;
-	SdkSizeOptionBtn sdk_size;
-	Label about_sdk_size;
 
 public:
 	Menu();
@@ -139,12 +124,11 @@ class Sudoku : public Layout
 	DevModeBtn dev;
 	GetSolutionBtn gs;
 
-	uint8_t size;
 	bool dev_mode;
 
 	Label console;
 public:
-	Sudoku(uint8_t open_slots_count,const uint8_t& size);
+	Sudoku(uint8_t open_slots_count);
 
 	void Render() const override;
 	BtnNode* GetStartNode() override;

@@ -70,6 +70,21 @@ void GenerateSudoku(cell sdk[9][9])
 			{
 				sdk[row][line].RemoveFD(sdk[tr][line].GetDigit());
 			}
+			
+			{
+				int8_t tr = row / 3 * 3;
+				int8_t tl = line / 3 * 3;
+				while ((tr != row) or (tl != line))
+				{
+					sdk[row][line].RemoveFD(sdk[tr][tl].GetDigit());
+					tl += 1;
+					if (tl >= line / 3 * 3 + 3)
+					{
+						tr += 1;
+						tl = line / 3 * 3;
+					}
+				}
+			}
 
 			if (not sdk[row][line].GenerateDigit())
 			{
@@ -77,11 +92,12 @@ void GenerateSudoku(cell sdk[9][9])
 				if (line == 0)
 				{
 					row -= 1;
-					line = 9;
+					line = 8;
 				}
 				else line -= 1;
 				continue;
 			}
+			cout << (int)row << ' ' << (int)line << '\n';
 			line += 1;
 		}
 		row += 1;
@@ -95,7 +111,6 @@ void PrintSudoku(cell sdk[9][9])
 		for (uint8_t row = 0; row < 9; row += 1)
 		{
 			cout << (int)sdk[row][line].GetDigit() << '\t';
-			Sleep(500);
 		}
 		cout << '\n';
 	}
@@ -105,9 +120,9 @@ void PrintSudoku(cell sdk[9][9])
 
 int main()
 {
-	/*cell sdk[9][9];
+	cell sdk[9][9];
 	GenerateSudoku(sdk);
-	PrintSudoku(sdk);*/
+	PrintSudoku(sdk);
 	//srand(time(0));
 	//bool* opened = new bool[9 * 9];
 	//for (uint8_t i = 0; i < 9 * 9; i += 1)
@@ -140,15 +155,4 @@ int main()
 	//	if (opened[i]) counter += 1;
 	//}
 	//cout << counter << " Hello" << '\n';
-
-	for (uint8_t line = 0; line < 120; line += 1)
-	{
-		cout << line % 10;
-	}
-	cout << '\n';
-	for (int line = 1; line < 100; line += 1)
-	{
-		cout << line << '\n';
-	}
-	return 0;
 }
