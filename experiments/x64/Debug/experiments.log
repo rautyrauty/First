@@ -1,3 +1,2 @@
 ﻿  experiments.cpp
-D:\repositories\training\experiments\experiments.cpp(12,13): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   experiments.vcxproj -> D:\repositories\training\x64\Debug\experiments.exe

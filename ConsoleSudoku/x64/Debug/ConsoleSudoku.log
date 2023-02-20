@@ -1,3 +1,7 @@
-﻿  sudoku.cpp
+﻿  main.cpp
+  sudoku.cpp
 D:\repositories\training\ConsoleSudoku\sudoku.cpp(102,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  tools-gui.cpp
+  Создание кода...
+D:\repositories\training\ConsoleSudoku\tools-gui.cpp(153): warning C4715: Cursore::IsBtnExist: значение возвращается не при всех путях выполнения
   ConsoleSudoku.vcxproj -> D:\repositories\training\x64\Debug\ConsoleSudoku.exe
