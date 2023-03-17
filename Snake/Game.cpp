@@ -34,7 +34,7 @@ uint16_t GiveBestScore()
 uint16_t SnakeGame()
 {
 	srand(time(0));
-	mapClass MyMap(40, 100);
+	mapClass MyMap(20, 40);
 	Snake MySnake(3, MyMap);
 	MyMap.print();
 	MyMap.SpawnFruit(MySnake.GetSize());
