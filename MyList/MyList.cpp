@@ -47,9 +47,12 @@ public:
             this->first_ = new element(value, NULL, this->first_);
             last_ = first_;
         }
+        else
+        {
+            this->first_ = new element(value, NULL, this->first_);
+            this->first_->next->prev = this->first_;
+        }
         elements_count += 1;
-        this->first_ = new element(value, NULL, this->first_);
-        this->first_->next->prev = this->first_;
     }
     void push_back(const data_t& value) // Вставка в конец
     {
@@ -58,9 +61,11 @@ public:
             this->first_ = new element(value, NULL, this->first_);
             last_ = first_;
         }
+        {
+            this->last_ = new element(value, this->last_, NULL);
+            this->last_->prev->next = this->last_;
+        }
         elements_count += 1;
-        this->last_ = new element(value, this->last_, NULL);
-        this->last_->prev->next = this->last_;
     }
 
     data_t pop_front() // Получение значения первого элемента и удаление его из списка
